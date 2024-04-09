@@ -102,11 +102,12 @@ public class AuthController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        Users user = new Users(signUpRequest.getUserName(),
-                signUpRequest.getEmail(),
-                signUpRequest.getCodingLanguage(),
-                encoder.encode(signUpRequest.getPassword())
-                );
+        Users users = new Users();
+        users.setUserName(signUpRequest.getUserName());
+        users.setEmail(signUpRequest.getEmail());
+        users.setCodingLanguage(signUpRequest.getCodingLanguage());
+//        users.setCenter(signUpRequest.getCenterId());
+        users.setPassword(encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -140,20 +141,13 @@ public class AuthController {
             });
         }
 
-//        userRepository.save(user);
-
-        Users userSave = userRepository.save(user);
+        Users userSave = userRepository.save(users);
         for (Role role : roles) {
             UserRole userRole = new UserRole();
             userRole.setUser(userSave);
             userRole.setRole(role);
             userRoleRepository.save(userRole);
         }
-
-//        Users centerSave = new Users();
-//        centerSave.setCenter(userSave);
-//
-
 
         return ResponseEntity.ok(new MessageResponse("Create user successfully!"));
     }

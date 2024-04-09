@@ -3,6 +3,7 @@ package com.example.project.controller;
 import com.example.project.entity.Center;
 import com.example.project.service.CenterServiceImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,8 @@ public class CenterController {
     }
 
     @GetMapping("/getCenter")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
+            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<?> getCenter(@RequestParam(required = false) String centerName){
 
         return centerServiceImpl.getCenter(centerName);
@@ -23,6 +26,8 @@ public class CenterController {
 
 
     @PostMapping("/addCenter")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
+            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<?> addCenter(@RequestBody Center center){
 
         return centerServiceImpl.addCenter(center);
@@ -30,6 +35,8 @@ public class CenterController {
 
 
     @PutMapping("/editCenter/{centerId}")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
+            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<?> editCenter(@PathVariable("centerId") Long centerId, @RequestBody Center center){
 
         return centerServiceImpl.editCenter(centerId, center);
@@ -37,6 +44,8 @@ public class CenterController {
 
 
     @DeleteMapping("/deleteCenter/{centerId}")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
+            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<?> deleteCenter(@PathVariable("centerId") Long centerId){
 
         return centerServiceImpl.deleteCenter(centerId);

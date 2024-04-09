@@ -1,6 +1,5 @@
 package com.example.project.payload;
 
-
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -15,8 +14,6 @@ public class SignupRequest {
     private String password;
 
     private String codingLanguage;
-
-    private String position;
 
     @NotBlank
     @Email

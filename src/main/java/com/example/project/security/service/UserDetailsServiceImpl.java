@@ -31,20 +31,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 
-    public static UserDetailsImpl getSessionInfo() {
-
-        UserDetailsImpl user = null;
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = context.getAuthentication();
-
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof UserDetailsImpl) {
-                user = (UserDetailsImpl) principal;
-            }
-        }
-        return user;
-    }
+//    public static UserDetailsImpl getSessionInfo() {
+//
+//        UserDetailsImpl user = null;
+//        SecurityContext context = SecurityContextHolder.getContext();
+//        Authentication authentication = context.getAuthentication();
+//
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof UserDetailsImpl) {
+//                user = (UserDetailsImpl) principal;
+//            }
+//        }
+//        return user;
+//    }
 
 }
