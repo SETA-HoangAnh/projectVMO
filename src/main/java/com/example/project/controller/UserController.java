@@ -1,12 +1,30 @@
 package com.example.project.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.project.payload.SignupRequest;
+import com.example.project.service.UserServiceImpl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("${apiPrefix}/users")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
+    private final UserServiceImpl userServiceImpl;
+
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
+    }
+
+
+    @PostMapping("/createUser")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
+            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
+    public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
+        return userServiceImpl.createUser(signUpRequest);
+    }
 }

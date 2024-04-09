@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/center")
+@RequestMapping("${apiPrefix}/center")
 public class CenterController {
 
     private final CenterServiceImpl centerServiceImpl;
