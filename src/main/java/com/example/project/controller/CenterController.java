@@ -25,8 +25,7 @@ public class CenterController {
 
 
     @PostMapping("/addCenter")
-    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
-            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<?> addCenter(@RequestBody Center center){
 
         return centerServiceImpl.addCenter(center);
@@ -34,8 +33,7 @@ public class CenterController {
 
 
     @PutMapping("/editCenter/{centerId}")
-    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
-            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<?> editCenter(@PathVariable("centerId") Long centerId, @RequestBody Center center){
 
         return centerServiceImpl.editCenter(centerId, center);
@@ -43,8 +41,7 @@ public class CenterController {
 
 
     @DeleteMapping("/deleteCenter/{centerId}")
-    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
-            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
+    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<?> deleteCenter(@PathVariable("centerId") Long centerId){
 
         return centerServiceImpl.deleteCenter(centerId);
