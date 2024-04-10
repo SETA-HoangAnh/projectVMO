@@ -17,8 +17,7 @@ public class CenterController {
     }
 
     @GetMapping("/getCenter")
-    @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_ADMIN') " +
-            "|| @userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
+    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> getCenter(@RequestParam(required = false) String centerName){
 
         return centerServiceImpl.getCenter(centerName);

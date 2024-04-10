@@ -5,5 +5,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("${apiPrefix}/user_grade")
-public class UserGrade {
+public class UserGradeController {
 }

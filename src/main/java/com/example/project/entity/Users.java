@@ -21,6 +21,9 @@ public class Users {
     @Column(name = "user_name")
     private String userName;
 
+    @Column(name = "full_name")
+    private String fullName;
+
     @Size(max = 120)
     @Column(name = "password")
     private String password;

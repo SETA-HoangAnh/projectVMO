@@ -41,6 +41,21 @@ public class UserServiceImpl {
         this.encoder = encoder;
     }
 
+
+    public ResponseEntity<?> getUser(String userName, String fullName){
+
+        if(userName == null){
+
+            userName = "";
+        }
+        if(fullName == null){
+
+            fullName = "";
+        }
+        return ResponseEntity.ok(userRepository.getUser(userName, fullName));
+    }
+
+
     public ResponseEntity<?> createUser(SignupRequest signUpRequest) {
         if (userRepository.existsByUserName(signUpRequest.getUserName())) {
             return ResponseEntity
@@ -56,6 +71,7 @@ public class UserServiceImpl {
 
         Users users = new Users();
         users.setUserName(signUpRequest.getUserName());
+        users.setFullName(signUpRequest.getFullName());
         users.setEmail(signUpRequest.getEmail());
         users.setCodingLanguage(signUpRequest.getCodingLanguage());
         users.setPassword(encoder.encode(signUpRequest.getPassword()));
@@ -70,12 +86,12 @@ public class UserServiceImpl {
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByRoleName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
+//                    case "admin":
+//                        Role adminRole = roleRepository.findByRoleName(ERole.ROLE_ADMIN)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(adminRole);
+//
+//                        break;
                     case "manager":
                         Role maRole = roleRepository.findByRoleName(ERole.ROLE_MANAGER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -101,6 +117,59 @@ public class UserServiceImpl {
         }
 
         return ResponseEntity.ok(new MessageResponse("Create user successfully!"));
+    }
+
+
+    public ResponseEntity<?> editUser(Long userId, Users users){
+
+        Boolean checkId = userRepository.existsByUserId(userId);
+        while(checkId == false){
+
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        Users userFind = userRepository.getById(userId);
+        userFind.setUserName(users.getUserName());
+        userFind.setFullName(users.getFullName());
+        userFind.setPassword(encoder.encode(users.getPassword()));
+        userFind.setCodingLanguage(users.getCodingLanguage());
+        userFind.setEmail(users.getEmail());
+        userFind.getCenter();
+        userRepository.save(userFind);
+
+        return ResponseEntity.ok("User Edited");
+    }
+
+
+    public ResponseEntity<?> deleteUser(Long userId){
+
+        Boolean checkId = userRepository.existsByUserId(userId);
+        while(checkId == false){
+
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        userRepository.deleteById(userId);
+
+        return ResponseEntity.ok("User deleted");
+    }
+
+
+    public ResponseEntity<?> tranferUser(Long userId, Users users){
+
+        Boolean checkId = userRepository.existsByUserId(userId);
+        while(checkId == false){
+
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        Users userFind = userRepository.getById(userId);
+        userFind.getUserName();
+        userFind.getFullName();
+        userFind.getPassword();
+        userFind.getCodingLanguage();
+        userFind.getEmail();
+        userFind.setCenter(users.getCenter());
+        userRepository.save(userFind);
+
+        return ResponseEntity.ok("User tranfered");
     }
 
 

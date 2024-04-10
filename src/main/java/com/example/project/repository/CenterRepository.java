@@ -15,7 +15,6 @@ public interface CenterRepository extends JpaRepository<Center, Long> {
             "WHERE c.center_name like %?1% ")
     List<Center> getCenter(String centerName);
 
-    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM Center c where c.centerId = ?1")
     Boolean existsByCenterId(Long centerId);
 
 }
