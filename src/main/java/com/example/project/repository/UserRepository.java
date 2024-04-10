@@ -12,8 +12,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<Users, Long> {
 
     @Query(nativeQuery = true,
-    value = "SELECT * FROM users u WHERE u.user_name like %?1% and u.full_name like %?2% ")
-    List<Users> getUser(String userName, String fullName);
+    value = "SELECT * FROM users u WHERE u.user_name like %?1% and u.full_name like %?2% " +
+            "and u.coding_language like %?3% and u.email like %?4% ")
+    List<Users> getUser(String userName, String fullName, String codingLanguage, String email);
 
     Optional<Users> findByUserName(String username);
 

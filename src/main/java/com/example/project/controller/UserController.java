@@ -25,9 +25,11 @@ public class UserController {
     @GetMapping("/getUser")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> editUser(@RequestParam(required = false) String userName,
-                                      @RequestParam(required = false) String fullName){
+                                      @RequestParam(required = false) String fullName,
+                                      @RequestParam(required = false) String codingLanguage,
+                                      @RequestParam(required = false) String email){
 
-        return userServiceImpl.getUser(userName, fullName);
+        return userServiceImpl.getUser(userName, fullName, codingLanguage, email);
     }
 
 

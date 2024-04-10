@@ -42,7 +42,7 @@ public class UserServiceImpl {
     }
 
 
-    public ResponseEntity<?> getUser(String userName, String fullName){
+    public ResponseEntity<?> getUser(String userName, String fullName, String codingLanguage, String email){
 
         if(userName == null){
 
@@ -52,7 +52,15 @@ public class UserServiceImpl {
 
             fullName = "";
         }
-        return ResponseEntity.ok(userRepository.getUser(userName, fullName));
+        if(codingLanguage == null){
+
+            codingLanguage = "";
+        }
+        if(email == null){
+
+            email = "";
+        }
+        return ResponseEntity.ok(userRepository.getUser(userName, fullName, codingLanguage, email));
     }
 
 
