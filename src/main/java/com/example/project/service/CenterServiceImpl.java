@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.entity.Center;
+import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.repository.CenterRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,8 @@ public class CenterServiceImpl {
 
     public ResponseEntity<?> editCenter(Long centerId, Center center){
 
-        Boolean checkId = centerRepository.existsByCenterId(centerId);
-        while(checkId == false){
-            return ResponseEntity.badRequest().body("Center not found");
-        }
-        Center centerFind = centerRepository.getById(centerId);
+        Center centerFind = centerRepository.findById(centerId)
+                .orElseThrow(()-> new ResourceNotFoundException("Center", "Id", centerId));
         centerFind.setCenterName(center.getCenterName());
         centerRepository.save(centerFind);
         return ResponseEntity.ok("Center updated");
@@ -45,11 +43,8 @@ public class CenterServiceImpl {
 
     public ResponseEntity<?> deleteCenter(Long centerId){
 
-        Boolean checkId = centerRepository.existsByCenterId(centerId);
-        while (checkId == false){
-            return ResponseEntity.badRequest().body("Center not found");
-        }
-        Center centerFind = centerRepository.getById(centerId);
+        Center centerFind = centerRepository.findById(centerId)
+                .orElseThrow(()-> new ResourceNotFoundException("Center", "Id", centerId));
         centerRepository.deleteById(centerFind.getCenterId());
         return ResponseEntity.ok("Center deleted");
 

@@ -4,6 +4,7 @@ import com.example.project.entity.ERole;
 import com.example.project.entity.Role;
 import com.example.project.entity.UserRole;
 import com.example.project.entity.Users;
+import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.payload.MessageResponse;
 import com.example.project.payload.SignupRequest;
 import com.example.project.repository.RoleRepository;
@@ -130,12 +131,8 @@ public class UserServiceImpl {
 
     public ResponseEntity<?> editUser(Long userId, Users users){
 
-        Boolean checkId = userRepository.existsByUserId(userId);
-        while(checkId == false){
-
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        Users userFind = userRepository.getById(userId);
+        Users userFind = userRepository.findById(userId)
+                .orElseThrow(()->new ResourceNotFoundException("User", "Id", userId));
         userFind.setUserName(users.getUserName());
         userFind.setFullName(users.getFullName());
         userFind.setPassword(encoder.encode(users.getPassword()));
@@ -150,12 +147,9 @@ public class UserServiceImpl {
 
     public ResponseEntity<?> deleteUser(Long userId){
 
-        Boolean checkId = userRepository.existsByUserId(userId);
-        while(checkId == false){
-
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        userRepository.deleteById(userId);
+        Users userFind = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
+        userRepository.deleteById(userFind.getUserId());
 
         return ResponseEntity.ok("User deleted");
     }
@@ -163,12 +157,8 @@ public class UserServiceImpl {
 
     public ResponseEntity<?> tranferUser(Long userId, Users users){
 
-        Boolean checkId = userRepository.existsByUserId(userId);
-        while(checkId == false){
-
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        Users userFind = userRepository.getById(userId);
+        Users userFind = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
         userFind.getUserName();
         userFind.getFullName();
         userFind.getPassword();
