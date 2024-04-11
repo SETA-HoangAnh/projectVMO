@@ -1,5 +1,6 @@
 package com.example.project.controller;
 
+import com.example.project.entity.UserGrade;
 import com.example.project.entity.Users;
 import com.example.project.payload.SignupRequest;
 import com.example.project.service.UserServiceImpl;
@@ -35,9 +36,9 @@ public class UserController {
 
     @PostMapping("/createUser")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signUpRequest, UserGrade userGrade) {
 
-        return userServiceImpl.createUser(signUpRequest);
+        return userServiceImpl.createUser(signUpRequest, userGrade);
     }
 
 

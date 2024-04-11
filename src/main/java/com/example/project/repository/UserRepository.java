@@ -1,5 +1,6 @@
 package com.example.project.repository;
 
+import com.example.project.dto.UserAndRoleDto;
 import com.example.project.dto.UserInforDto;
 import com.example.project.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,6 +22,14 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "WHERE u.user_name like %?1% and u.full_name like %?2% " +
             "and u.coding_language like %?3% and u.email like %?4% ")
     List<UserInforDto> getUser(String userName, String fullName, String codingLanguage, String email);
+
+    @Query(nativeQuery = true,
+    value = "SELECT u.user_id as userId, r.role_name as roleName " +
+            "FROM users u " +
+            "INNER JOIN user_role ur on ur.user_id = u.user_id " +
+            "INNER JOIN role r on r.role_id = ur.role_id " +
+            "WHERE u.user_id = ?1 ")
+    UserAndRoleDto roleNamefind(Long userId);
 
     Optional<Users> findByUserName(String username);
 

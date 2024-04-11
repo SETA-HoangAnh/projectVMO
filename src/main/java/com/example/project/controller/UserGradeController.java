@@ -1,12 +1,12 @@
 package com.example.project.controller;
 
+import com.example.project.entity.UserGrade;
 import com.example.project.service.UserGradeServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("${apiPrefix}/user_grade")
+@RequestMapping("${apiPrefix}/userGrade")
 public class UserGradeController {
 
     private final UserGradeServiceImpl userGradeServiceImpl;
@@ -15,5 +15,17 @@ public class UserGradeController {
         this.userGradeServiceImpl = userGradeServiceImpl;
     }
 
-//    @GetMapping("/getUserGrade/{userId}")
+    @GetMapping("/getGrade/{userId}")
+    public ResponseEntity<?> getGrade(@PathVariable("userId") Long userId){
+
+        return userGradeServiceImpl.getGrade(userId);
+    }
+
+    @PutMapping("/editGrade/{userId}")
+    public ResponseEntity<?> editGrade(@PathVariable("userId") Long userId,
+                                       @RequestBody UserGrade userGrade){
+
+        return userGradeServiceImpl.editGrade(userId, userGrade);
+    }
+
 }

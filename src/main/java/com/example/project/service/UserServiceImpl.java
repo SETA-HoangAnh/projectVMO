@@ -1,24 +1,22 @@
 package com.example.project.service;
 
-import com.example.project.entity.ERole;
-import com.example.project.entity.Role;
-import com.example.project.entity.UserRole;
-import com.example.project.entity.Users;
+import com.example.project.dto.UserAndRoleDto;
+import com.example.project.entity.*;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.payload.MessageResponse;
 import com.example.project.payload.SignupRequest;
 import com.example.project.repository.RoleRepository;
+import com.example.project.repository.UserGradeRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.repository.UserRoleRepository;
 import com.example.project.security.service.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -35,11 +33,14 @@ public class UserServiceImpl {
 
     private final PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
+    private final UserGradeRepository userGradeRepository;
+
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, PasswordEncoder encoder, UserGradeRepository userGradeRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
+        this.userGradeRepository = userGradeRepository;
     }
 
 
@@ -65,7 +66,7 @@ public class UserServiceImpl {
     }
 
 
-    public ResponseEntity<?> createUser(SignupRequest signUpRequest) {
+    public ResponseEntity<?> createUser(SignupRequest signUpRequest, UserGrade userGrade) {
         if (userRepository.existsByUserName(signUpRequest.getUserName())) {
             return ResponseEntity
                     .badRequest()
@@ -125,6 +126,19 @@ public class UserServiceImpl {
             userRoleRepository.save(userRole);
         }
 
+        UserAndRoleDto rolefind = userRepository.roleNamefind(users.getUserId());
+        String roleNamefind2 = rolefind.getRoleName();
+        if(roleNamefind2.equals("ROLE_FRESHER")) {
+            userGrade.setUserId(users.getUserId());
+            Users userFind = userRepository.findById(userGrade.getUserId()).get();
+            userGrade.setUsers(userFind);
+            userGrade.setExercise1(null);
+            userGrade.setExercise2(null);
+            userGrade.setExercise3(null);
+
+            userGradeRepository.save(userGrade);;
+        }
+
         return ResponseEntity.ok(new MessageResponse("Create user successfully!"));
     }
 
@@ -182,4 +196,12 @@ public class UserServiceImpl {
         }
         return result;
     }
+
+
+//    public static Long getUserLoginId() {
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//        return userDetails.getId();
+//    }
 }
