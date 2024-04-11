@@ -23,7 +23,7 @@ public class UserGradeDto {
     private Double exercise3;
 
     @Transient
-    private Double averageScore;
+    private String averageScore;
 
     public UserGradeDto(Long userId, String userName, String fullName, Double exercise1, Double exercise2,
                         Double exercise3)

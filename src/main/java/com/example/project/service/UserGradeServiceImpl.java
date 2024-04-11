@@ -9,6 +9,8 @@ import com.example.project.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
+
 @Service
 public class UserGradeServiceImpl {
 
@@ -41,7 +43,7 @@ public class UserGradeServiceImpl {
         return ResponseEntity.ok("Grade edited");
     }
 
-    public static Double sumScore(Long userId){
+    public static String sumScore(Long userId){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
@@ -51,7 +53,10 @@ public class UserGradeServiceImpl {
         Double ex2 = gradeFind.getExercise2();
         Double ex3 = gradeFind.getExercise3();
         Double sum = (ex1 + ex2 + ex3)/3;
-        return sum;
+        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+        String result = decimalFormat.format(sum);
+        return result;
+
 
     }
 

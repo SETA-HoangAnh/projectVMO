@@ -33,6 +33,4 @@ public interface UserGradeRepository extends JpaRepository<UserGrade, Long> {
     UserGrade findGradebyId(Long userGradeId);
 
 
-//    SELECT r.roleId FROM User u, UserRole r where r.userId = u.userId and u.name = "Jonh Smith"
-
 }
