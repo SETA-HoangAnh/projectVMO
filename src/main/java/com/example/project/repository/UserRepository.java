@@ -33,6 +33,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "WHERE u.user_id = ?1 ")
     UserAndRoleDto roleNamefind(Long userId);
 
+
     @Query("select count (u.userId) " +
             "from Users u " +
             "left join u.center c where c.centerId = ?1 ")

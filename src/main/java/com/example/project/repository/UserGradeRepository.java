@@ -1,6 +1,7 @@
 package com.example.project.repository;
 
 import com.example.project.dto.UserGradeDto;
+import com.example.project.dto.UserGradeNoSumDto;
 import com.example.project.entity.UserGrade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,12 @@ public interface UserGradeRepository extends JpaRepository<UserGrade, Long> {
             "left join ug.users u where u.userId = ?1 ")
     UserGradeDto getGrade(Long userId);
 
+    @Query("select new com.example.project.dto.UserGradeNoSumDto(" +
+            "u.userId, u.userName, u.fullName, ug.exercise1, ug.exercise2, ug.exercise3" +
+            ")" +
+            "from UserGrade ug " +
+            "left join ug.users u where u.userId = ?1 ")
+    UserGradeNoSumDto getGradeNoSum(Long userId);
 
     @Query(nativeQuery = true,
     value = "SELECT ug.user_grade_id " +

@@ -21,12 +21,12 @@ public interface CenterRepository extends JpaRepository<Center, Long> {
 //    value = "SELECT c.center_id, c.center_name FROM center c WHERE c.center_id = ?1")
 //    StatisByCenterDto getByCenter(Long centerId);
 
-//    @Query("select new com.example.project.dto.UserGradeDto(" +
-//            "u.userId, u.userName, u.fullName, ug.exercise1, ug.exercise2, ug.exercise3" +
-//            ")" +
-//            "from UserGrade ug " +
-//            "left join ug.users u where u.userId = ?1 ")
-//    UserGradeDto getGrade(Long userId);
+    @Query("select new com.example.project.dto.UserGradeDto(" +
+            "u.userId, u.userName, u.fullName, ug.exercise1, ug.exercise2, ug.exercise3" +
+            ")" +
+            "from UserGrade ug " +
+            "left join ug.users u where u.userId = ?1 ")
+    UserGradeDto getGrade(Long userId);
 
     @Query("select new com.example.project.dto.StatisByCenterDto(" +
             "c.centerId, c.centerName" +

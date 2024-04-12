@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.dto.UserGradeDto;
+import com.example.project.dto.UserGradeNoSumDto;
 import com.example.project.entity.UserGrade;
 import com.example.project.entity.Users;
 import com.example.project.exception.ResourceNotFoundException;
@@ -32,8 +33,8 @@ public class UserGradeServiceImpl {
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
-        UserGradeDto userGradeDto = userGradeRepository.getGrade(userFind.getUserId());
-        UserGrade gradeFind = userGradeRepository.findById(userGradeDto.getUserId())
+        UserGradeNoSumDto userGradeNoSumDto = userGradeRepository.getGradeNoSum(userFind.getUserId());
+        UserGrade gradeFind = userGradeRepository.findById(userGradeNoSumDto.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
         gradeFind.setExercise1(userGrade.getExercise1());
         gradeFind.setExercise2(userGrade.getExercise2());
@@ -43,20 +44,20 @@ public class UserGradeServiceImpl {
         return ResponseEntity.ok("Grade edited");
     }
 
-    public static String sumScore(Long userId){
+    public static Long sumScore(Long userId){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
         Long getGradeId = userGradeRepository.getGrade2(userFind.getUserId());
         UserGrade gradeFind = userGradeRepository.findGradebyId(getGradeId);
-        Double ex1 = gradeFind.getExercise1();
-        Double ex2 = gradeFind.getExercise2();
-        Double ex3 = gradeFind.getExercise3();
-        Double sum = (ex1 + ex2 + ex3)/3;
-        DecimalFormat decimalFormat = new DecimalFormat("#");
-        String result = decimalFormat.format(sum);
-        return result;
-
+        Long ex1 = gradeFind.getExercise1();
+        Long ex2 = gradeFind.getExercise2();
+        Long ex3 = gradeFind.getExercise3();
+        Long sum = (ex1 + ex2 + ex3)/3;
+//        DecimalFormat decimalFormat = new DecimalFormat("#");
+//        String result = decimalFormat.format(sum);
+//        return result;
+        return sum;
 
     }
 

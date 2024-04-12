@@ -16,13 +16,13 @@ public class UserGrade {
     private Long userGradeId;
 
     @Column(name = "exercise1")
-    private Double exercise1;
+    private Long exercise1;
 
     @Column(name = "exercise2")
-    private Double exercise2;
+    private Long exercise2;
 
     @Column(name = "exercise3")
-    private Double exercise3;
+    private Long exercise3;
 
     @Transient
     private Long userId;
