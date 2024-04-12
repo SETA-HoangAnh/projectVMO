@@ -28,13 +28,15 @@ public class Users {
     @Column(name = "password")
     private String password;
 
+    /**
+     * 1: Java
+     * 2: C#
+     * 3: Python
+     * 4: JavaScrip
+     */
     @Column(name = "coding_language")
     private String codingLanguage;
 
-//    //1: manager
-//    //2: fresher
-//    @Column(name = "position")
-//    private String position;
 
     @Column(name = "email", unique = true)
     private String email;

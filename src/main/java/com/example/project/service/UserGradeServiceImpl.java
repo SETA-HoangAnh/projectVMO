@@ -53,7 +53,7 @@ public class UserGradeServiceImpl {
         Double ex2 = gradeFind.getExercise2();
         Double ex3 = gradeFind.getExercise3();
         Double sum = (ex1 + ex2 + ex3)/3;
-        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+        DecimalFormat decimalFormat = new DecimalFormat("#");
         String result = decimalFormat.format(sum);
         return result;
 

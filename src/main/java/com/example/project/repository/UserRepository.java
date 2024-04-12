@@ -1,6 +1,8 @@
 package com.example.project.repository;
 
 import com.example.project.dto.UserAndRoleDto;
+import com.example.project.dto.UserDetailDto;
+import com.example.project.dto.UserGradeDto;
 import com.example.project.dto.UserInforDto;
 import com.example.project.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,6 +32,18 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "INNER JOIN role r on r.role_id = ur.role_id " +
             "WHERE u.user_id = ?1 ")
     UserAndRoleDto roleNamefind(Long userId);
+
+    @Query("select count (u.userId) " +
+            "from Users u " +
+            "left join u.center c where c.centerId = ?1 ")
+    Long countFresher(Long centerId);
+
+    @Query("select new com.example.project.dto.UserDetailDto(" +
+            "u.userId, u.userName, u.fullName, u.codingLanguage, c.centerId " +
+            ")" +
+            "from Users u " +
+            "left join u.center c where c.centerId = ?1 ")
+    List<UserDetailDto> getUserDetail(Long centerId);
 
     Optional<Users> findByUserName(String username);
 

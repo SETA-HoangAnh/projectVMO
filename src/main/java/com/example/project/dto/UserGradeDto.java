@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Transient;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +25,8 @@ public class UserGradeDto {
 
     @Transient
     private String averageScore;
+
+//    private List<UserGradeInforDto> userGradeInforDtoList;
 
     public UserGradeDto(Long userId, String userName, String fullName, Double exercise1, Double exercise2,
                         Double exercise3)
