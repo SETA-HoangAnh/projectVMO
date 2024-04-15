@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${apiPrefix}/statistical")
-public class StatistController {
+public class StatisController {
 
     private final StatisServiceImpl statisServiceImpl;
 
-    public StatistController(StatisServiceImpl statisServiceImpl) {
+    public StatisController(StatisServiceImpl statisServiceImpl) {
         this.statisServiceImpl = statisServiceImpl;
     }
 
@@ -22,11 +22,13 @@ public class StatistController {
         return statisServiceImpl.getByCenter(centerId);
     }
 
-    @GetMapping("/getFresherByScore")
-    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> getFresherByScore(){
+    //Chua lam xong api nay
 
-        return null;
-    }
+//    @GetMapping("/getFresherByScore")
+////    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
+//    public ResponseEntity<?> getFresherByScore(){
+//
+//        return statisServiceImpl.scoreDtoList();
+//    }
 
 }

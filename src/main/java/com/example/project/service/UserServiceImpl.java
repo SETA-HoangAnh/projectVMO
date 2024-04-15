@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.dto.UserAndRoleDto;
+import com.example.project.dto.UserInforClassDto;
 import com.example.project.entity.*;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.payload.MessageResponse;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +27,7 @@ import java.util.Set;
 @Service
 public class UserServiceImpl {
 
-    private final UserRepository userRepository;
+    private static UserRepository userRepository;
 
     private final UserRoleRepository userRoleRepository;
 
@@ -182,6 +184,16 @@ public class UserServiceImpl {
         userRepository.save(userFind);
 
         return ResponseEntity.ok("User tranfered");
+    }
+
+
+    public static List<UserInforClassDto> listUIClassDto(Long averageScore){
+
+        DecimalFormat decimalFormat = new DecimalFormat("#");
+        String result = decimalFormat.format(averageScore);;
+        Long formatAverageScore = Long.parseLong(result);
+        List<UserInforClassDto> list = userRepository.listUIClassDto(formatAverageScore);
+        return list;
     }
 
 

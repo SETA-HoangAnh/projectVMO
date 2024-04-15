@@ -1,5 +1,7 @@
 package com.example.project.repository;
 
+import com.example.project.dto.ScoreListDetailDto;
+import com.example.project.dto.StatisByScoreDto;
 import com.example.project.dto.UserGradeDto;
 import com.example.project.dto.UserGradeNoSumDto;
 import com.example.project.entity.UserGrade;
@@ -38,6 +40,18 @@ public interface UserGradeRepository extends JpaRepository<UserGrade, Long> {
                     "FROM user_grade ug " +
                     "WHERE ug.user_grade_id = ?1 ")
     UserGrade findGradebyId(Long userGradeId);
+
+    @Query("select (ug.exercise1 + ug.exercise2 + ug.exercise3)/3 " +
+            "from UserGrade ug " +
+            "group by (ug.exercise1 + ug.exercise2 + ug.exercise3)/3 ")
+    List<ScoreListDetailDto> scoreList();
+
+
+    @Query("select new com.example.project.dto.StatisByScoreDto(" +
+            "ug.userGradeId " +
+            ")" +
+            "from UserGrade ug ")
+    List<StatisByScoreDto> scoreDtoList();
 
 
 }

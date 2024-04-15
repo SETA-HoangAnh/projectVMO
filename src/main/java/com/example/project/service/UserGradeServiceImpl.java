@@ -44,7 +44,7 @@ public class UserGradeServiceImpl {
         return ResponseEntity.ok("Grade edited");
     }
 
-    public static Long sumScore(Long userId){
+    public static String sumScore(Long userId){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
@@ -54,10 +54,10 @@ public class UserGradeServiceImpl {
         Long ex2 = gradeFind.getExercise2();
         Long ex3 = gradeFind.getExercise3();
         Long sum = (ex1 + ex2 + ex3)/3;
-//        DecimalFormat decimalFormat = new DecimalFormat("#");
-//        String result = decimalFormat.format(sum);
-//        return result;
-        return sum;
+        DecimalFormat decimalFormat = new DecimalFormat("#");
+        String result = decimalFormat.format(sum);
+        return result;
+//        return sum;
 
     }
 

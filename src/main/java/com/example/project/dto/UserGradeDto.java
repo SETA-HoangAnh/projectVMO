@@ -24,7 +24,7 @@ public class UserGradeDto {
     private Long exercise3;
 
     @Transient
-    private Long averageScore;
+    private String averageScore;
 
 //    private List<UserGradeInforDto> userGradeInforDtoList;
 

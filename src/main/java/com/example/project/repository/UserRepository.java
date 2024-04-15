@@ -1,9 +1,6 @@
 package com.example.project.repository;
 
-import com.example.project.dto.UserAndRoleDto;
-import com.example.project.dto.UserDetailDto;
-import com.example.project.dto.UserGradeDto;
-import com.example.project.dto.UserInforDto;
+import com.example.project.dto.*;
 import com.example.project.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -45,6 +42,15 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "from Users u " +
             "left join u.center c where c.centerId = ?1 ")
     List<UserDetailDto> getUserDetail(Long centerId);
+
+    @Query("select new com.example.project.dto.UserInforClassDto(" +
+            "u.userId, u.userName, u.fullName, u.codingLanguage, u.email, c.centerName " +
+            ")" +
+            "from Users u " +
+            "inner join u.userGrade ug  " +
+            "inner join u.center c " +
+            "where (ug.exercise1 + ug.exercise2 + ug.exercise3)/3 = ?1")
+    List<UserInforClassDto> listUIClassDto(Long averageScore);
 
     Optional<Users> findByUserName(String username);
 
