@@ -53,6 +53,10 @@ public class Users {
     @PrimaryKeyJoinColumn
     private UserGrade userGrade;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<ProjectUser> projectUsers;
+
     public Users() {
     }
 

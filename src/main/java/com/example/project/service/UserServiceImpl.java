@@ -98,12 +98,6 @@ public class UserServiceImpl {
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-//                    case "admin":
-//                        Role adminRole = roleRepository.findByRoleName(ERole.ROLE_ADMIN)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(adminRole);
-//
-//                        break;
                     case "manager":
                         Role maRole = roleRepository.findByRoleName(ERole.ROLE_MANAGER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -210,10 +204,10 @@ public class UserServiceImpl {
     }
 
 
-//    public static Long getUserLoginId() {
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//        return userDetails.getId();
-//    }
+    public static Long getUserLoginId() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return userDetails.getId();
+    }
 }

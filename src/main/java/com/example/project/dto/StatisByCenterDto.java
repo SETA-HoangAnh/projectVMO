@@ -24,7 +24,6 @@ public class StatisByCenterDto {
         this.centerId = centerId;
         this.centerName = centerName;
         this.fresherNumber = StatisServiceImpl.countFresher(this.centerId);
-//        this.fresherNumber = 1L;
         this.userDetailDtoList = StatisServiceImpl.userDetailDtoList(this.centerId);
     }
 }
