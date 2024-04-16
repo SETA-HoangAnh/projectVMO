@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.service.ProjectUserServiceImpl;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,4 +22,14 @@ public class ProjectUser {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @PostPersist
+    public void notiPersist(){
+        ProjectUserServiceImpl.printMessagePresit(this.project.getProjectId(), this.users.getUserId());
+    }
+
+//    @PostRemove
+//    public void notiRemove(){
+//        ProjectUserServiceImpl.printMessageRemove(this.project.getProjectId(), this.users.getUserId());
+//    }
 }

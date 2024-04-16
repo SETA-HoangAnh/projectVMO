@@ -37,7 +37,7 @@ public class ProjectUserController {
 
     @PostMapping("/addToProject")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> addToProject(@RequestBody List<ProjectUser> projectUserList){
+    public ResponseEntity<?> addToProject(@RequestBody List<ProjectUser> projectUserList, ProjectUser projectUser){
 
         return projectUserServiceImpl.addToProject(projectUserList);
     }
