@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.socket.Notify;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -56,6 +57,10 @@ public class Users {
     @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<ProjectUser> projectUsers;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Notify> notifies;
 
     public Users() {
     }
