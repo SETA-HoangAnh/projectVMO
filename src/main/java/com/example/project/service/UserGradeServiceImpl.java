@@ -29,7 +29,7 @@ public class UserGradeServiceImpl {
         return ResponseEntity.ok(userGradeRepository.getGrade(userId));
     }
 
-    public ResponseEntity<?> editGrade(Long userId, UserGrade userGrade){
+    public UserGrade editGrade(Long userId, UserGrade userGrade){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
@@ -39,9 +39,8 @@ public class UserGradeServiceImpl {
         gradeFind.setExercise1(userGrade.getExercise1());
         gradeFind.setExercise2(userGrade.getExercise2());
         gradeFind.setExercise3(userGrade.getExercise3());
-        userGradeRepository.save(gradeFind);
 
-        return ResponseEntity.ok("Grade edited");
+        return userGradeRepository.save(gradeFind);
     }
 
     public static String sumScore(Long userId){

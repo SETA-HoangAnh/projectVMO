@@ -20,7 +20,7 @@ public class UserGradeController {
     @GetMapping("/getGrade/{userId}")
     public ResponseEntity<?> getGrade(@PathVariable("userId") Long userId){
 
-        return userGradeServiceImpl.getGrade(userId);
+        return ResponseEntity.ok(userGradeServiceImpl.getGrade(userId));
     }
 
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
@@ -28,7 +28,8 @@ public class UserGradeController {
     public ResponseEntity<?> editGrade(@PathVariable("userId") Long userId,
                                        @RequestBody UserGrade userGrade){
 
-        return userGradeServiceImpl.editGrade(userId, userGrade);
+        userGradeServiceImpl.editGrade(userId, userGrade);
+        return ResponseEntity.ok("Grade edited");
     }
 
 }

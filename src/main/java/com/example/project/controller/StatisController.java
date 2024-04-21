@@ -19,7 +19,7 @@ public class StatisController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> getFresherByCenter(@RequestParam(required = false) Long centerId){
 
-        return statisServiceImpl.getByCenter(centerId);
+        return ResponseEntity.ok(statisServiceImpl.getByCenter(centerId));
     }
 
     //Chua lam xong api nay

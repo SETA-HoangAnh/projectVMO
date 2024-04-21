@@ -28,10 +28,10 @@ public class StatisServiceImpl {
     }
 
 
-    public ResponseEntity<?> getByCenter(Long centerId){
+    public List<StatisByCenterDto> getByCenter(Long centerId){
 
        List<StatisByCenterDto> centerFind = centerRepository.getByCenter(centerId);
-       return ResponseEntity.ok(centerFind);
+       return centerFind;
     }
 
 

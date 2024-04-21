@@ -23,7 +23,7 @@ public class ProjectUserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> listProjectUser(@PathVariable("projectId") Long projectId){
 
-        return projectUserServiceImpl.listProjectUser(projectId);
+        return ResponseEntity.ok(projectUserServiceImpl.listProjectUser(projectId));
     }
 
 
@@ -31,7 +31,7 @@ public class ProjectUserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_FRESHER')")
     public ResponseEntity<?> listProjectByUser(){
 
-        return projectUserServiceImpl.listProjectByUser();
+        return ResponseEntity.ok(projectUserServiceImpl.listProjectByUser());
     }
 
 
@@ -39,7 +39,8 @@ public class ProjectUserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> addToProject(@RequestBody List<ProjectUser> projectUserList, ProjectUser projectUser){
 
-        return projectUserServiceImpl.addToProject(projectUserList);
+        projectUserServiceImpl.addToProject(projectUserList);
+        return ResponseEntity.ok("Added to project");
     }
 
 
@@ -48,6 +49,7 @@ public class ProjectUserController {
     public ResponseEntity<?> removeFromProject(@RequestParam Long projectId,
                                                @RequestParam Long userId){
 
-        return projectUserServiceImpl.removeFromProject(projectId, userId);
+        projectUserServiceImpl.removeFromProject(projectId, userId);
+        return ResponseEntity.ok("Removed from project");
     }
 }

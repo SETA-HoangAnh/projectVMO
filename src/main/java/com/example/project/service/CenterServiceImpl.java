@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class CenterServiceImpl {
@@ -17,36 +18,36 @@ public class CenterServiceImpl {
         this.centerRepository = centerRepository;
     }
 
-    public ResponseEntity<?> getCenter(String centerName){
+    public List<Center> getCenter(String centerName){
 
         if(centerName == null){
             centerName = "";
         }
-        return ResponseEntity.ok(centerRepository.getCenter(centerName));
+        return centerRepository.getCenter(centerName);
     }
 
-    public ResponseEntity<?> addCenter(Center center){
+    public Center addCenter(Center center){
 
-        centerRepository.save(center);
-        return ResponseEntity.ok("New center added");
+        return centerRepository.save(center);
     }
 
-    public ResponseEntity<?> editCenter(Long centerId, Center center){
+    public Center editCenter(Long centerId, Center center){
 
         Center centerFind = centerRepository.findById(centerId)
                 .orElseThrow(()-> new ResourceNotFoundException("Center", "Id", centerId));
         centerFind.setCenterName(center.getCenterName());
-        centerRepository.save(centerFind);
-        return ResponseEntity.ok("Center updated");
+
+        return centerRepository.save(centerFind);
 
     }
 
-    public ResponseEntity<?> deleteCenter(Long centerId){
+    public Center deleteCenter(Long centerId){
 
         Center centerFind = centerRepository.findById(centerId)
                 .orElseThrow(()-> new ResourceNotFoundException("Center", "Id", centerId));
         centerRepository.deleteById(centerFind.getCenterId());
-        return ResponseEntity.ok("Center deleted");
+
+        return null;
 
     }
 }

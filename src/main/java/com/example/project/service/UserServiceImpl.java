@@ -2,6 +2,7 @@ package com.example.project.service;
 
 import com.example.project.dto.UserAndRoleDto;
 import com.example.project.dto.UserInforClassDto;
+import com.example.project.dto.UserInforDto;
 import com.example.project.entity.*;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.payload.MessageResponse;
@@ -46,7 +47,7 @@ public class UserServiceImpl {
     }
 
 
-    public ResponseEntity<?> getUser(String userName, String fullName, String codingLanguage, String email){
+    public List<UserInforDto> getUser(String userName, String fullName, String codingLanguage, String email){
 
         if(userName == null){
 
@@ -64,7 +65,7 @@ public class UserServiceImpl {
 
             email = "";
         }
-        return ResponseEntity.ok(userRepository.getUser(userName, fullName, codingLanguage, email));
+        return userRepository.getUser(userName, fullName, codingLanguage, email);
     }
 
 
@@ -139,7 +140,7 @@ public class UserServiceImpl {
     }
 
 
-    public ResponseEntity<?> editUser(Long userId, Users users){
+    public Users editUser(Long userId, Users users){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(()->new ResourceNotFoundException("User", "Id", userId));
@@ -149,23 +150,22 @@ public class UserServiceImpl {
         userFind.setCodingLanguage(users.getCodingLanguage());
         userFind.setEmail(users.getEmail());
         userFind.getCenter();
-        userRepository.save(userFind);
 
-        return ResponseEntity.ok("User Edited");
+        return userRepository.save(userFind);
     }
 
 
-    public ResponseEntity<?> deleteUser(Long userId){
+    public Users deleteUser(Long userId){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
         userRepository.deleteById(userFind.getUserId());
 
-        return ResponseEntity.ok("User deleted");
+        return null;
     }
 
 
-    public ResponseEntity<?> tranferUser(Long userId, Users users){
+    public Users tranferUser(Long userId, Users users){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
@@ -175,9 +175,8 @@ public class UserServiceImpl {
         userFind.getCodingLanguage();
         userFind.getEmail();
         userFind.setCenter(users.getCenter());
-        userRepository.save(userFind);
 
-        return ResponseEntity.ok("User tranfered");
+        return userRepository.save(userFind);
     }
 
 

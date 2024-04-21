@@ -56,32 +56,31 @@ public class ProjectUserServiceImpl {
         this.javaMailSender = javaMailSender;
     }
 
-    public ResponseEntity<?> listProjectUser(Long projectId){
+    public List<ProjectAndUserDto> listProjectUser(Long projectId){
 
         List<ProjectAndUserDto> projectAndUserDtoList = projectUserRepository.listProjectAndUser(projectId);
-        return ResponseEntity.ok(projectAndUserDtoList);
+        return projectAndUserDtoList;
     }
 
-    public ResponseEntity<?> listProjectByUser(){
+    public List<ProjectDto> listProjectByUser(){
 
         List<ProjectDto> listProjectByUser = projectUserRepository.listProjectByUser(getUserLoginId());
-        return ResponseEntity.ok(listProjectByUser);
+        return listProjectByUser;
     }
 
 
-    public ResponseEntity<?> addToProject(List<ProjectUser> projectUserList){
+    public List<ProjectUser> addToProject(List<ProjectUser> projectUserList){
 
-        projectUserRepository.saveAll(projectUserList);
-        return ResponseEntity.ok("Added to project");
+        return projectUserRepository.saveAll(projectUserList);
     }
 
 
-    public ResponseEntity<?> removeFromProject(Long projectId, Long userId){
+    public ProjectUser removeFromProject(Long projectId, Long userId){
 
         ProjectUser projectUserFind = projectUserRepository.findProjectByUser(projectId, userId);
         projectUserRepository.deleteById(projectUserFind.getProjectUserId());
         printMessageRemove(projectId, userId);
-        return ResponseEntity.ok("Removed from project");
+        return null;
     }
 
     public static Long getUserLoginId() {

@@ -30,7 +30,7 @@ public class UserController {
                                       @RequestParam(required = false) String codingLanguage,
                                       @RequestParam(required = false) String email){
 
-        return userServiceImpl.getUser(userName, fullName, codingLanguage, email);
+        return ResponseEntity.ok(userServiceImpl.getUser(userName, fullName, codingLanguage, email));
     }
 
 
@@ -46,7 +46,8 @@ public class UserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> editUser(@PathVariable("userId") Long userId, @RequestBody Users users){
 
-        return userServiceImpl.editUser(userId, users);
+        userServiceImpl.editUser(userId, users);
+        return ResponseEntity.ok("User edited");
     }
 
 
@@ -54,7 +55,8 @@ public class UserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId){
 
-        return userServiceImpl.deleteUser(userId);
+        userServiceImpl.deleteUser(userId);
+        return ResponseEntity.ok("User deleted");
     }
 
 
@@ -62,6 +64,7 @@ public class UserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> tranferUser(@PathVariable("userId") Long userId, @RequestBody Users users){
 
-        return userServiceImpl.tranferUser(userId, users);
+        userServiceImpl.tranferUser(userId, users);
+        return ResponseEntity.ok("User tranfered");
     }
 }

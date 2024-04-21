@@ -18,7 +18,7 @@ public class ProjectServiceImpl {
         this.projectRepository = projectRepository;
     }
 
-    public ResponseEntity<?> getProject(String projectName, String projectCode){
+    public List<ProjectDto> getProject(String projectName, String projectCode){
 
         if(projectName == null){
             projectName = "";
@@ -29,18 +29,17 @@ public class ProjectServiceImpl {
 
         List<ProjectDto> projectDtoList = projectRepository.getProject(projectName, projectCode);
 
-        return ResponseEntity.ok(projectDtoList);
+        return projectDtoList;
     }
 
 
-    public ResponseEntity<?> addProject(Project project){
+    public Project addProject(Project project){
 
-        projectRepository.save(project);
-        return ResponseEntity.ok("Project saved");
+        return projectRepository.save(project);
     }
 
 
-    public ResponseEntity<?> editProject(Long projectId, Project project){
+    public Project editProject(Long projectId, Project project){
 
         Project projectFind = projectRepository.findById(projectId)
                 .orElseThrow(()-> new ResourceNotFoundException("Project", "id", projectId));
@@ -51,19 +50,17 @@ public class ProjectServiceImpl {
         projectFind.setCodingLanguage(project.getCodingLanguage());
         projectFind.setProjectStatus(project.getProjectStatus());
 
-        projectRepository.save(projectFind);
-
-        return ResponseEntity.ok("Project edited");
+        return projectRepository.save(projectFind);
     }
 
 
-    public ResponseEntity<?> deleteProject(Long projectId){
+    public Project deleteProject(Long projectId){
 
         Project projectFind = projectRepository.findById(projectId)
                 .orElseThrow(()-> new ResourceNotFoundException("Project", "id", projectId));
 
         projectRepository.deleteById(projectFind.getProjectId());
 
-        return ResponseEntity.ok("Project deleted");
+        return null;
     }
 }

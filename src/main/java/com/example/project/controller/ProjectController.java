@@ -21,7 +21,7 @@ public class ProjectController {
     public ResponseEntity<?> getProject(@RequestParam(required = false) String projectName,
                                         @RequestParam(required = false) String projectCode){
 
-        return projectServiceImpl.getProject(projectName, projectCode);
+        return ResponseEntity.ok(projectServiceImpl.getProject(projectName, projectCode));
     }
 
 
@@ -29,7 +29,8 @@ public class ProjectController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> addProject(@RequestBody Project project){
 
-        return projectServiceImpl.addProject(project);
+        projectServiceImpl.addProject(project);
+        return ResponseEntity.ok("Project saved");
     }
 
 
@@ -38,7 +39,8 @@ public class ProjectController {
     public ResponseEntity<?> editProject(@PathVariable("projectId") Long projectId,
                                          @RequestBody Project project){
 
-        return projectServiceImpl.editProject(projectId, project);
+        projectServiceImpl.editProject(projectId, project);
+        return ResponseEntity.ok("Project edited");
     }
 
 
@@ -46,7 +48,8 @@ public class ProjectController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> deleteProject(@PathVariable("projectId") Long projectId){
 
-        return projectServiceImpl.deleteProject(projectId);
+        projectServiceImpl.deleteProject(projectId);
+        return ResponseEntity.ok("Project deleted");
     }
 
 }
