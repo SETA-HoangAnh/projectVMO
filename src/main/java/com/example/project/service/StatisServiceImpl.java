@@ -48,25 +48,36 @@ public class StatisServiceImpl {
     }
 
 
+    public List<StatisByAverageDto> listByAverage(){
+
+         return null;
+    }
+
+
     public static List<Long> scoreList(){
 
         List<Long> listScore = userGradeRepository.scoreList();
         return listScore;
     }
 
-    public ResponseEntity<?> scoreDtoList(){
 
-//        List<StatisByScoreDto> listScoreDto = userGradeRepository.scoreDtoList();
-//        List<Long> newList = new ArrayList<>();
-//        DecimalFormat decimalFormat = new DecimalFormat("#");
-//        for(StatisByScoreDto i : listScoreDto){
-//            String result = decimalFormat.format(i);
-//            Long formatResult = Long.parseLong(result);
-//            newList.add(formatResult);
-//        }
-//        return ResponseEntity.ok(newList);
-//        return ResponseEntity.ok(listScoreDto);
+    public List<UserInforNoCenterDTO> listInforByAverage(Long averageScore){
 
-        return null;
+        List<UserInforNoCenterDTO> list = userGradeRepository.listInforByAverage(averageScore);
+        return list;
+    }
+
+
+    public static List<Long> scoreList2(){
+
+        List<Long> listScore = userGradeRepository.scoreList();
+        return listScore;
+    }
+
+
+    public static List<UserInforNoCenterDTO> listInforByAverage2(Long averageScore){
+
+        List<UserInforNoCenterDTO> list = userGradeRepository.listInforByAverage(averageScore);
+        return list;
     }
 }

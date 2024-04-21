@@ -1,9 +1,7 @@
 package com.example.project.repository;
 
-import com.example.project.dto.ScoreListDetailDto;
+import com.example.project.dto.*;
 
-import com.example.project.dto.UserGradeDto;
-import com.example.project.dto.UserGradeNoSumDto;
 import com.example.project.entity.UserGrade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -41,10 +39,23 @@ public interface UserGradeRepository extends JpaRepository<UserGrade, Long> {
                     "WHERE ug.user_grade_id = ?1 ")
     UserGrade findGradebyId(Long userGradeId);
 
-    @Query("select (ug.exercise1 + ug.exercise2 + ug.exercise3)/3 " +
-            "from UserGrade ug " +
-            "group by (ug.exercise1 + ug.exercise2 + ug.exercise3)/3 ")
+//    @Query("select (ug.exercise1 + ug.exercise2 + ug.exercise3)/3 " +
+//            "from UserGrade ug " +
+//            "group by (ug.exercise1 + ug.exercise2 + ug.exercise3)/3 ")
+//    List<Long> scoreList();
+
+    @Query(nativeQuery = true,
+    value = "SELECT FLOOR((ug.exercise1 + ug.exercise2 + ug.exercise3)/3) " +
+            "FROM user_grade ug " +
+            "group by  FLOOR((ug.exercise1 + ug.exercise2 + ug.exercise3)/3)")
     List<Long> scoreList();
 
+    @Query(nativeQuery = true,
+    value = "SELECT u.user_id as userId, u.user_name as userName, u.full_name as fullName, " +
+            "u.coding_language as codingLanguage, u.email as email " +
+            "FROM users u " +
+            "INNER JOIN user_grade ug on u.user_id = ug.user_id " +
+            "WHERE FLOOR((ug.exercise1 + ug.exercise2 + ug.exercise3)/3) = ?1")
+    List<UserInforNoCenterDTO> listInforByAverage(Long averageScore);
 
 }
