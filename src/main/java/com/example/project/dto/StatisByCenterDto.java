@@ -1,10 +1,10 @@
 package com.example.project.dto;
 
 import com.example.project.service.StatisServiceImpl;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Transient;
 import java.util.List;
 
 @Data
@@ -15,7 +15,6 @@ public class StatisByCenterDto {
 
     private String centerName;
 
-    @Transient
     private Long fresherNumber;
 
     private List<UserDetailDto> userDetailDtoList;

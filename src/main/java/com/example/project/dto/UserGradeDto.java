@@ -1,11 +1,10 @@
 package com.example.project.dto;
 
 import com.example.project.service.UserGradeServiceImpl;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Transient;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,10 +22,8 @@ public class UserGradeDto {
 
     private Long exercise3;
 
-    @Transient
     private String averageScore;
 
-//    private List<UserGradeInforDto> userGradeInforDtoList;
 
     public UserGradeDto(Long userId, String userName, String fullName, Long exercise1, Long exercise2,
                         Long exercise3)

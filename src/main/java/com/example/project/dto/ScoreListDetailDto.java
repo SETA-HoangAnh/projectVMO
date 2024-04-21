@@ -1,10 +1,8 @@
 package com.example.project.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Transient;
 import java.util.List;
 
 @Data
@@ -17,7 +15,6 @@ public class ScoreListDetailDto {
 
     private Long exercise3;
 
-    @Transient
     private List<UserInforClassDto> userInforClassDtoList;
 
     public ScoreListDetailDto(Long exercise1, Long exercise2, Long exercise3) {

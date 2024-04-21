@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.service.StatisServiceImpl;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,11 @@ public class StatisController {
 
     //Chua lam xong api nay
 
-//    @GetMapping("/getFresherByScore")
-////    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-//    public ResponseEntity<?> getFresherByScore(){
-//
-//        return statisServiceImpl.scoreDtoList();
-//    }
+    @GetMapping("/getFresherByScore")
+//    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
+    public ResponseEntity<?> getFresherByScore(){
+
+        return statisServiceImpl.scoreDtoList();
+    }
 
 }

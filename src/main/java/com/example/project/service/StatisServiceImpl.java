@@ -48,15 +48,15 @@ public class StatisServiceImpl {
     }
 
 
-    public static List<ScoreListDetailDto> scoreList(){
+    public static List<Long> scoreList(){
 
-        List<ScoreListDetailDto> listScore = userGradeRepository.scoreList();
+        List<Long> listScore = userGradeRepository.scoreList();
         return listScore;
     }
 
     public ResponseEntity<?> scoreDtoList(){
 
-        List<StatisByScoreDto> listScoreDto = userGradeRepository.scoreDtoList();
+//        List<StatisByScoreDto> listScoreDto = userGradeRepository.scoreDtoList();
 //        List<Long> newList = new ArrayList<>();
 //        DecimalFormat decimalFormat = new DecimalFormat("#");
 //        for(StatisByScoreDto i : listScoreDto){
@@ -65,6 +65,8 @@ public class StatisServiceImpl {
 //            newList.add(formatResult);
 //        }
 //        return ResponseEntity.ok(newList);
-        return ResponseEntity.ok(listScoreDto);
+//        return ResponseEntity.ok(listScoreDto);
+
+        return null;
     }
 }

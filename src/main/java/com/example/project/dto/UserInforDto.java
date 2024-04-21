@@ -1,7 +1,5 @@
 package com.example.project.dto;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Size;
 
 public interface UserInforDto {
 
