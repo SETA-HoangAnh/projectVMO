@@ -5,7 +5,6 @@ import com.example.project.dto.UserInforClassDto;
 import com.example.project.dto.UserInforDto;
 import com.example.project.entity.*;
 import com.example.project.exception.ResourceNotFoundException;
-import com.example.project.payload.MessageResponse;
 import com.example.project.payload.SignupRequest;
 import com.example.project.repository.RoleRepository;
 import com.example.project.repository.UserGradeRepository;
@@ -13,7 +12,6 @@ import com.example.project.repository.UserRepository;
 import com.example.project.repository.UserRoleRepository;
 import com.example.project.security.service.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,13 +71,13 @@ public class UserServiceImpl {
         if (userRepository.existsByUserName(signUpRequest.getUserName())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body("Error: Username is already taken!");
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body("Error: Email is already in use!");
         }
 
         Users users = new Users();
@@ -136,7 +134,7 @@ public class UserServiceImpl {
             userGradeRepository.save(userGrade);;
         }
 
-        return ResponseEntity.ok(new MessageResponse("Create user successfully!"));
+        return ResponseEntity.ok("Create user successfully!");
     }
 
 

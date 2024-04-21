@@ -3,7 +3,6 @@ package com.example.project.service;
 import com.example.project.entity.Users;
 import com.example.project.payload.JWTResponse;
 import com.example.project.payload.LoginRequest;
-import com.example.project.payload.MessageResponse;
 import com.example.project.repository.UserRepository;
 import com.example.project.security.jwt.JwtUtils;
 import com.example.project.security.service.UserDetailsImpl;
@@ -52,7 +51,7 @@ public class AuthServiceImpl {
         } else {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Không tìm thấy người dùng"));
+                    .body("Không tìm thấy người dùng");
         }
     }
 }
