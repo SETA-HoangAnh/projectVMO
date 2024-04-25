@@ -28,8 +28,4 @@ public class ProjectUser {
         ProjectUserServiceImpl.printMessagePresit(this.project.getProjectId(), this.users.getUserId());
     }
 
-//    @PostRemove
-//    public void notiRemove(){
-//        ProjectUserServiceImpl.printMessageRemove(this.project.getProjectId(), this.users.getUserId());
-//    }
 }

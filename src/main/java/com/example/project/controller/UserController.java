@@ -23,10 +23,9 @@ public class UserController {
         this.userServiceImpl = userServiceImpl;
     }
 
-
     @GetMapping("/getUser")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> editUser(@RequestParam(required = false) String userName,
+    public ResponseEntity<?> getUser(@RequestParam(required = false) String userName,
                                       @RequestParam(required = false) String fullName,
                                       @RequestParam(required = false) String codingLanguage,
                                       @RequestParam(required = false) String email){
@@ -39,7 +38,10 @@ public class UserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signUpRequest, UserGrade userGrade) {
 
-        return userServiceImpl.createUser(signUpRequest, userGrade);
+        return ResponseEntity.ok(userServiceImpl.createUser(signUpRequest, userGrade));
+
+//        userServiceImpl.createUser(signUpRequest, userGrade);
+//        return "create-user";
     }
 
 
