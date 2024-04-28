@@ -38,6 +38,8 @@ public class WebSecurityConfig {
 
     private static final String[] PUBLIC_URLS = { "/api/auth/**" };
 
+    private static final String[] PUBLIC_URLS_TEST = { "/api/test/**" };
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -67,18 +69,14 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//                .authorizeRequests().antMatchers(PUBLIC_URLS).permitAll()
-//                .antMatchers("/api/test/**").permitAll()
-//                .anyRequest().permitAll();
-
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests().antMatchers(PUBLIC_URLS).permitAll()
+                .antMatchers(PUBLIC_URLS_TEST).permitAll()
+                .anyRequest().permitAll();
         http.authenticationProvider(authenticationProvider());
-
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
