@@ -34,14 +34,22 @@ public class UserController {
     }
 
 
+    @GetMapping("/getUserNoCenter")
+    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
+    public ResponseEntity<?> getUserNoCenter(@RequestParam(required = false) String userName,
+                                     @RequestParam(required = false) String fullName,
+                                     @RequestParam(required = false) String codingLanguage,
+                                     @RequestParam(required = false) String email){
+
+        return ResponseEntity.ok(userServiceImpl.getUserNoCenter(userName, fullName, codingLanguage, email));
+    }
+
+
     @PostMapping("/createUser")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signUpRequest, UserGrade userGrade) {
 
         return ResponseEntity.ok(userServiceImpl.createUser(signUpRequest, userGrade));
-
-//        userServiceImpl.createUser(signUpRequest, userGrade);
-//        return "create-user";
     }
 
 

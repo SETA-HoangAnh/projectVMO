@@ -3,6 +3,7 @@ package com.example.project.service;
 import com.example.project.dto.UserAndRoleDto;
 import com.example.project.dto.UserInforClassDto;
 import com.example.project.dto.UserInforDto;
+import com.example.project.dto.UserInforNoCenterDTO;
 import com.example.project.entity.*;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.payload.SignupRequest;
@@ -64,6 +65,28 @@ public class UserServiceImpl {
             email = "";
         }
         return userRepository.getUser(userName, fullName, codingLanguage, email);
+    }
+
+
+    public List<UserInforNoCenterDTO> getUserNoCenter(String userName, String fullName, String codingLanguage, String email){
+
+        if(userName == null){
+
+            userName = "";
+        }
+        if(fullName == null){
+
+            fullName = "";
+        }
+        if(codingLanguage == null){
+
+            codingLanguage = "";
+        }
+        if(email == null){
+
+            email = "";
+        }
+        return userRepository.getUserNoCenter(userName, fullName, codingLanguage, email);
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.project.payload;
 
+import com.example.project.entity.Center;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

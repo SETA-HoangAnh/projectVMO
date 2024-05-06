@@ -51,7 +51,7 @@ public class AuthServiceImpl {
         } else {
             return ResponseEntity
                     .badRequest()
-                    .body("Không tìm thấy người dùng");
+                    .body("User not found");
         }
     }
 }
