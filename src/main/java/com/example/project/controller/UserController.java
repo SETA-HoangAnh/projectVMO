@@ -23,25 +23,27 @@ public class UserController {
         this.userServiceImpl = userServiceImpl;
     }
 
+
+    /**
+     * type = 1: filter by user with center
+     * type = 2: filter by user with no center
+     */
     @GetMapping("/getUser")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> getUser(@RequestParam(required = false) String userName,
                                       @RequestParam(required = false) String fullName,
                                       @RequestParam(required = false) String codingLanguage,
-                                      @RequestParam(required = false) String email){
+                                      @RequestParam(required = false) String email,
+                                      @RequestParam(required = false, defaultValue = "1") String type){
+        if(type.equals("1")) {
 
+            return ResponseEntity.ok(userServiceImpl.getUser(userName, fullName, codingLanguage, email));
+        }
+        if(type.equals("2")){
+
+            return ResponseEntity.ok(userServiceImpl.getUserNoCenter(userName, fullName, codingLanguage, email));
+        }
         return ResponseEntity.ok(userServiceImpl.getUser(userName, fullName, codingLanguage, email));
-    }
-
-
-    @GetMapping("/getUserNoCenter")
-    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> getUserNoCenter(@RequestParam(required = false) String userName,
-                                     @RequestParam(required = false) String fullName,
-                                     @RequestParam(required = false) String codingLanguage,
-                                     @RequestParam(required = false) String email){
-
-        return ResponseEntity.ok(userServiceImpl.getUserNoCenter(userName, fullName, codingLanguage, email));
     }
 
 
