@@ -11,6 +11,8 @@ import com.example.project.security.service.UserDetailsImpl;
 import com.example.project.util.Constant;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
@@ -44,15 +46,15 @@ public class ProjectUserServiceImpl {
         this.javaMailSender = javaMailSender;
     }
 
-    public List<ProjectAndUserDto> listProjectUser(Long projectId){
+    public Page<ProjectAndUserDto> listProjectUser(Long projectId, Pageable pageable){
 
-        List<ProjectAndUserDto> projectAndUserDtoList = projectUserRepository.listProjectAndUser(projectId);
+        Page<ProjectAndUserDto> projectAndUserDtoList = projectUserRepository.listProjectAndUser(projectId, pageable);
         return projectAndUserDtoList;
     }
 
-    public List<ProjectDto> listProjectByUser(){
+    public Page<ProjectDto> listProjectByUser(Pageable pageable){
 
-        List<ProjectDto> listProjectByUser = projectUserRepository.listProjectByUser(getUserLoginId());
+        Page<ProjectDto> listProjectByUser = projectUserRepository.listProjectByUser(getUserLoginId(), pageable);
         return listProjectByUser;
     }
 

@@ -3,6 +3,8 @@ package com.example.project.repository;
 import com.example.project.dto.ProjectAndUserDto;
 import com.example.project.dto.ProjectDto;
 import com.example.project.entity.ProjectUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,8 +29,13 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> 
             FROM users u 
             INNER JOIN project_user pu on pu.user_id = u.user_id 
             INNER JOIN project p on p.project_id = pu.project_id 
+            WHERE p.project_id = ?1 """,
+    countQuery = """
+            SELECT count(u.user_id) FROM users u 
+            INNER JOIN project_user pu on pu.user_id = u.user_id 
+            INNER JOIN project p on p.project_id = pu.project_id 
             WHERE p.project_id = ?1 """)
-    List<ProjectAndUserDto> listProjectAndUser(Long projectId);
+    Page<ProjectAndUserDto> listProjectAndUser(Long projectId, Pageable pageable);
 
     @Query(nativeQuery = true,
             value = """
@@ -38,6 +45,11 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> 
                     FROM project p 
                     INNER JOIN project_user pu on pu.project_id = p.project_id 
                     INNER JOIN users u on u.user_id = pu.user_id 
-                    WHERE u.user_id = ?1""")
-    List<ProjectDto> listProjectByUser(Long userId);
+                    WHERE u.user_id = ?1""",
+    countQuery = """
+            SELECT count(p.project_id) FROM project p 
+            INNER JOIN project_user pu on pu.project_id = p.project_id 
+            INNER JOIN users u on u.user_id = pu.user_id 
+            WHERE u.user_id = ?1 """)
+    Page<ProjectDto> listProjectByUser(Long userId, Pageable pageable);
 }

@@ -1,15 +1,24 @@
 package com.example.project.controller;
 
+import com.example.project.dto.UserInforDto;
+import com.example.project.dto.UserInforNoCenterDTO;
 import com.example.project.entity.UserGrade;
 import com.example.project.entity.Users;
 import com.example.project.payload.SignupRequest;
 import com.example.project.service.UserServiceImpl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/users")
@@ -34,16 +43,41 @@ public class UserController {
                                       @RequestParam(required = false) String fullName,
                                       @RequestParam(required = false) String codingLanguage,
                                       @RequestParam(required = false) String email,
-                                      @RequestParam(required = false, defaultValue = "1") String type){
+                                      @RequestParam(required = false, defaultValue = "1") String type,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size){
+
+        List<UserInforDto> users;
+        List<UserInforNoCenterDTO> usersNoCenter;
+        Pageable paging = PageRequest.of(page, size);
+        Page<UserInforDto> usersPage = null;
+        Page<UserInforNoCenterDTO> usersPageNoCenter = null;
+
         if(type.equals("1")) {
 
-            return ResponseEntity.ok(userServiceImpl.getUser(userName, fullName, codingLanguage, email));
+            usersPage = userServiceImpl.getUser(userName, fullName, codingLanguage, email, paging);
         }
         if(type.equals("2")){
 
-            return ResponseEntity.ok(userServiceImpl.getUserNoCenter(userName, fullName, codingLanguage, email));
+            usersPageNoCenter = userServiceImpl.getUserNoCenter(userName, fullName, codingLanguage, email, paging);
+            usersNoCenter = usersPageNoCenter.getContent();
+            Map<String, Object> response = new HashMap<>();
+            response.put("users", usersNoCenter);
+            response.put("currentPage", usersPageNoCenter.getNumber());
+            response.put("totalItems", usersPageNoCenter.getTotalElements());
+            response.put("totalPages", usersPageNoCenter.getTotalPages());
         }
-        return ResponseEntity.ok(userServiceImpl.getUser(userName, fullName, codingLanguage, email));
+
+        usersPage = userServiceImpl.getUser(userName, fullName, codingLanguage, email, paging);
+
+        users = usersPage.getContent();
+        Map<String, Object> response = new HashMap<>();
+        response.put("users", users);
+        response.put("currentPage", usersPage.getNumber());
+        response.put("totalItems", usersPage.getTotalElements());
+        response.put("totalPages", usersPage.getTotalPages());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

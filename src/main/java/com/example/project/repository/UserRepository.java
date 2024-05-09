@@ -2,6 +2,8 @@ package com.example.project.repository;
 
 import com.example.project.dto.*;
 import com.example.project.entity.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,8 +22,12 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             INNER JOIN center c 
             on c.center_id = u.center_id 
             WHERE u.user_name like %?1% and u.full_name like %?2% 
+            and u.coding_language like %?3% and u.email like %?4% """,
+    countQuery = """
+            SELECT count(user_id) FROM users u INNER JOIN center c on c.center_id = u.center_id 
+            WHERE u.user_name like %?1% and u.full_name like %?2% 
             and u.coding_language like %?3% and u.email like %?4% """)
-    List<UserInforDto> getUser(String userName, String fullName, String codingLanguage, String email);
+    Page<UserInforDto> getUser(String userName, String fullName, String codingLanguage, String email, Pageable pageable);
 
     @Query(nativeQuery = true,
             value = """
@@ -29,8 +35,12 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             u.coding_language as codingLanguage, u.email as email  
             FROM users u 
             WHERE u.user_name like %?1% and u.full_name like %?2% 
+            and u.coding_language like %?3% and u.email like %?4% and u.center_id is null """,
+            countQuery = """
+            SELECT count(user_id) FROM users u  
+            WHERE u.user_name like %?1% and u.full_name like %?2% 
             and u.coding_language like %?3% and u.email like %?4% and u.center_id is null """)
-    List<UserInforNoCenterDTO> getUserNoCenter(String userName, String fullName, String codingLanguage, String email);
+    Page<UserInforNoCenterDTO> getUserNoCenter(String userName, String fullName, String codingLanguage, String email, Pageable pageable);
 
 
     @Query(nativeQuery = true,

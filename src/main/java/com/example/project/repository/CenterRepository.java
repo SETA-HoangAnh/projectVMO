@@ -3,6 +3,8 @@ package com.example.project.repository;
 import com.example.project.dto.StatisByCenterDto;
 import com.example.project.dto.UserGradeDto;
 import com.example.project.entity.Center;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,8 +17,10 @@ public interface CenterRepository extends JpaRepository<Center, Long> {
     @Query(nativeQuery = true,
     value = """
             SELECT * FROM center c 
-            WHERE c.center_name like %?1% """)
-    List<Center> getCenter(String centerName);
+            WHERE c.center_name like %?1% """,
+    countQuery = """
+            SELECT count(center_id) FROM center c WHERE c.center_name like %?1% """)
+    Page<Center> getCenter(String centerName, Pageable pageable);
 
 //    @Query(nativeQuery = true,
 //    value = "SELECT c.center_id, c.center_name FROM center c WHERE c.center_id = ?1")

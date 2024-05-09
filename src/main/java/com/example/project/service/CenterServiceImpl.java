@@ -3,6 +3,8 @@ package com.example.project.service;
 import com.example.project.entity.Center;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.repository.CenterRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,12 @@ public class CenterServiceImpl {
         this.centerRepository = centerRepository;
     }
 
-    public List<Center> getCenter(String centerName){
+    public Page<Center> getCenter(String centerName, Pageable pageable){
 
         if(centerName == null){
             centerName = "";
         }
-        return centerRepository.getCenter(centerName);
+        return centerRepository.getCenter(centerName, pageable);
     }
 
     public Center addCenter(Center center){

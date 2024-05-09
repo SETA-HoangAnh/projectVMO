@@ -4,6 +4,8 @@ import com.example.project.dto.ProjectDto;
 import com.example.project.entity.Project;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.repository.ProjectRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,7 @@ public class ProjectServiceImpl {
         this.projectRepository = projectRepository;
     }
 
-    public List<ProjectDto> getProject(String projectName, String projectCode){
+    public Page<ProjectDto> getProject(String projectName, String projectCode, Pageable pageable){
 
         if(projectName == null){
             projectName = "";
@@ -27,7 +29,7 @@ public class ProjectServiceImpl {
             projectCode = "";
         }
 
-        List<ProjectDto> projectDtoList = projectRepository.getProject(projectName, projectCode);
+        Page<ProjectDto> projectDtoList = projectRepository.getProject(projectName, projectCode, pageable);
 
         return projectDtoList;
     }

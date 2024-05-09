@@ -1,11 +1,21 @@
 package com.example.project.controller;
 
+import com.example.project.dto.ProjectDto;
+import com.example.project.entity.Center;
 import com.example.project.entity.Project;
 import com.example.project.service.ProjectServiceImpl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/project")
@@ -20,9 +30,23 @@ public class ProjectController {
     @GetMapping("/getProject")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> getProject(@RequestParam(required = false) String projectName,
-                                        @RequestParam(required = false) String projectCode){
+                                        @RequestParam(required = false) String projectCode,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int size){
 
-        return ResponseEntity.ok(projectServiceImpl.getProject(projectName, projectCode));
+        List<ProjectDto> projects;
+        Pageable paging = PageRequest.of(page, size);
+        Page<ProjectDto> projectsPage = null;
+
+        projectsPage = projectServiceImpl.getProject(projectName, projectCode, paging);
+        projects = projectsPage.getContent();
+        Map<String, Object> response = new HashMap<>();
+        response.put("projects", projects);
+        response.put("currentPage", projectsPage.getNumber());
+        response.put("totalItems", projectsPage.getTotalElements());
+        response.put("totalPages", projectsPage.getTotalPages());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

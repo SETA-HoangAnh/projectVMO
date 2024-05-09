@@ -12,6 +12,10 @@ import com.example.project.repository.UserGradeRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.repository.UserRoleRepository;
 import com.example.project.security.service.UserDetailsImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,10 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl {
@@ -46,7 +47,8 @@ public class UserServiceImpl {
     }
 
 
-    public List<UserInforDto> getUser(String userName, String fullName, String codingLanguage, String email){
+    public Page<UserInforDto> getUser(String userName, String fullName, String codingLanguage, String email,
+                                      Pageable pageable){
 
         if(userName == null){
 
@@ -64,11 +66,12 @@ public class UserServiceImpl {
 
             email = "";
         }
-        return userRepository.getUser(userName, fullName, codingLanguage, email);
+        return userRepository.getUser(userName, fullName, codingLanguage, email, pageable);
     }
 
 
-    public List<UserInforNoCenterDTO> getUserNoCenter(String userName, String fullName, String codingLanguage, String email){
+    public Page<UserInforNoCenterDTO> getUserNoCenter(String userName, String fullName, String codingLanguage, String email,
+                                                      Pageable pageable){
 
         if(userName == null){
 
@@ -86,7 +89,7 @@ public class UserServiceImpl {
 
             email = "";
         }
-        return userRepository.getUserNoCenter(userName, fullName, codingLanguage, email);
+        return userRepository.getUserNoCenter(userName, fullName, codingLanguage, email, pageable);
     }
 
 
