@@ -1,4 +1,4 @@
-package com.example.project.service;
+package com.example.project.service.Impl;
 
 import com.example.project.dto.UserGradeDto;
 import com.example.project.dto.UserGradeNoSumDto;
@@ -7,13 +7,14 @@ import com.example.project.entity.Users;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.repository.UserGradeRepository;
 import com.example.project.repository.UserRepository;
+import com.example.project.service.UserGradeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 
 @Service
-public class UserGradeServiceImpl {
+public class UserGradeServiceImpl implements UserGradeService {
 
     private static UserGradeRepository userGradeRepository;
 
@@ -24,12 +25,16 @@ public class UserGradeServiceImpl {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<?> getGrade(Long userId){
 
-        return ResponseEntity.ok(userGradeRepository.getGrade(userId));
+    @Override
+    public UserGradeDto getGrade(Long userId){
+
+        return userGradeRepository.getGrade(userId);
     }
 
-    public UserGrade editGrade(Long userId, UserGrade userGrade){
+
+    @Override
+    public void editGrade(Long userId, UserGrade userGrade){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
@@ -40,7 +45,7 @@ public class UserGradeServiceImpl {
         gradeFind.setExercise2(userGrade.getExercise2());
         gradeFind.setExercise3(userGrade.getExercise3());
 
-        return userGradeRepository.save(gradeFind);
+        userGradeRepository.save(gradeFind);
     }
 
     public static String sumScore(Long userId){

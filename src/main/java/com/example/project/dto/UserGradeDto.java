@@ -1,6 +1,6 @@
 package com.example.project.dto;
 
-import com.example.project.service.UserGradeServiceImpl;
+import com.example.project.service.Impl.UserGradeServiceImpl;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.project.service;
+package com.example.project.service.Impl;
 
 import com.example.project.entity.Users;
 import com.example.project.payload.JWTResponse;

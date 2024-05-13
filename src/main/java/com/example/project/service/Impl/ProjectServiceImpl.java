@@ -1,9 +1,11 @@
-package com.example.project.service;
+package com.example.project.service.Impl;
 
 import com.example.project.dto.ProjectDto;
 import com.example.project.entity.Project;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.repository.ProjectRepository;
+import com.example.project.service.ProjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +14,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProjectServiceImpl {
+@RequiredArgsConstructor
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
 
     public Page<ProjectDto> getProject(String projectName, String projectCode, Pageable pageable){
 
@@ -33,14 +32,15 @@ public class ProjectServiceImpl {
         return projectDtoList;
     }
 
+    @Override
+    public void addProject(Project project){
 
-    public Project addProject(Project project){
-
-        return projectRepository.save(project);
+        projectRepository.save(project);
     }
 
 
-    public Project editProject(Long projectId, Project project){
+    @Override
+    public void editProject(Long projectId, Project project){
 
         Project projectFind = projectRepository.findById(projectId)
                 .orElseThrow(()-> new ResourceNotFoundException("Project", "id", projectId));
@@ -51,17 +51,16 @@ public class ProjectServiceImpl {
         projectFind.setCodingLanguage(project.getCodingLanguage());
         projectFind.setProjectStatus(project.getProjectStatus());
 
-        return projectRepository.save(projectFind);
+        projectRepository.save(projectFind);
     }
 
 
-    public Project deleteProject(Long projectId){
+    @Override
+    public void deleteProject(Long projectId){
 
         Project projectFind = projectRepository.findById(projectId)
                 .orElseThrow(()-> new ResourceNotFoundException("Project", "id", projectId));
 
         projectRepository.deleteById(projectFind.getProjectId());
-
-        return null;
     }
 }

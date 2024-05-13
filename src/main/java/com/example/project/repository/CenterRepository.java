@@ -22,6 +22,7 @@ public interface CenterRepository extends JpaRepository<Center, Long> {
             SELECT count(center_id) FROM center c WHERE c.center_name like %?1% """)
     Page<Center> getCenter(String centerName, Pageable pageable);
 
+
 //    @Query(nativeQuery = true,
 //    value = "SELECT c.center_id, c.center_name FROM center c WHERE c.center_id = ?1")
 //    StatisByCenterDto getByCenter(Long centerId);

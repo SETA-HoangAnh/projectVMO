@@ -1,10 +1,11 @@
 package com.example.project.controller;
 
 import com.example.project.dto.ProjectDto;
-import com.example.project.entity.Center;
 import com.example.project.entity.Project;
-import com.example.project.service.ProjectServiceImpl;
+import com.example.project.service.Impl.ProjectServiceImpl;
 
+import com.example.project.service.ProjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,61 +20,58 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/project")
+@RequiredArgsConstructor
 public class ProjectController {
 
-    private final ProjectServiceImpl projectServiceImpl;
+    private final ProjectService projectService;
 
-    public ProjectController(ProjectServiceImpl projectServiceImpl) {
-        this.projectServiceImpl = projectServiceImpl;
-    }
-
-    @GetMapping("/getProject")
+    /**
+     * API danh sách dự án
+     */
+    @GetMapping("/")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> getProject(@RequestParam(required = false) String projectName,
+    public ResponseEntity<Page<ProjectDto>> getProject(@RequestParam(required = false) String projectName,
                                         @RequestParam(required = false) String projectCode,
-                                        @RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "10") int size){
+                                        Pageable pageable){
 
-        List<ProjectDto> projects;
-        Pageable paging = PageRequest.of(page, size);
-        Page<ProjectDto> projectsPage = null;
-
-        projectsPage = projectServiceImpl.getProject(projectName, projectCode, paging);
-        projects = projectsPage.getContent();
-        Map<String, Object> response = new HashMap<>();
-        response.put("projects", projects);
-        response.put("currentPage", projectsPage.getNumber());
-        response.put("totalItems", projectsPage.getTotalElements());
-        response.put("totalPages", projectsPage.getTotalPages());
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Page<ProjectDto> project = projectService.getProject(projectName, projectCode, pageable);
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
 
-    @PostMapping("/addProject")
+    /**
+     * API thêm dự án
+     */
+    @PostMapping("/")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> addProject(@RequestBody Project project){
+    public ResponseEntity<String> addProject(@RequestBody Project project){
 
-        projectServiceImpl.addProject(project);
+        projectService.addProject(project);
         return ResponseEntity.ok("Project saved");
     }
 
 
-    @PutMapping("/editProject/{projectId}")
+    /**
+     * API sửa dự án
+     */
+    @PutMapping("/{projectId}")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> editProject(@PathVariable("projectId") Long projectId,
+    public ResponseEntity<String> editProject(@PathVariable("projectId") Long projectId,
                                          @RequestBody Project project){
 
-        projectServiceImpl.editProject(projectId, project);
+        projectService.editProject(projectId, project);
         return ResponseEntity.ok("Project edited");
     }
 
 
-    @DeleteMapping("/deleteProject/{projectId}")
+    /**
+     * API xóa dự án
+     */
+    @DeleteMapping("/{projectId}")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> deleteProject(@PathVariable("projectId") Long projectId){
+    public ResponseEntity<String> deleteProject(@PathVariable("projectId") Long projectId){
 
-        projectServiceImpl.deleteProject(projectId);
+        projectService.deleteProject(projectId);
         return ResponseEntity.ok("Project deleted");
     }
 

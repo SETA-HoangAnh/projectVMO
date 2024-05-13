@@ -1,7 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.payload.LoginRequest;
-import com.example.project.service.AuthServiceImpl;
+import com.example.project.service.Impl.AuthServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +19,9 @@ public class AuthController {
 
     private final AuthServiceImpl authServiceImpl;
 
+    /**
+     * API login
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         return authServiceImpl.authenticateUser(loginRequest);

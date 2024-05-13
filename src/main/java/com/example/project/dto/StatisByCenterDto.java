@@ -1,6 +1,6 @@
 package com.example.project.dto;
 
-import com.example.project.service.StatisServiceImpl;
+import com.example.project.service.Impl.StatisServiceImpl;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

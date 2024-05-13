@@ -1,4 +1,4 @@
-package com.example.project.service;
+package com.example.project.service.Impl;
 
 import com.example.project.dto.ProjectAndUserDto;
 import com.example.project.dto.ProjectDto;
@@ -8,6 +8,7 @@ import com.example.project.repository.ProjectRepository;
 import com.example.project.repository.ProjectUserRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.security.service.UserDetailsImpl;
+import com.example.project.service.ProjectUserService;
 import com.example.project.util.Constant;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -28,7 +29,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Service
-public class ProjectUserServiceImpl {
+public class ProjectUserServiceImpl implements ProjectUserService {
 
     private static ProjectUserRepository projectUserRepository;
 
@@ -46,12 +47,15 @@ public class ProjectUserServiceImpl {
         this.javaMailSender = javaMailSender;
     }
 
+    @Override
     public Page<ProjectAndUserDto> listProjectUser(Long projectId, Pageable pageable){
 
         Page<ProjectAndUserDto> projectAndUserDtoList = projectUserRepository.listProjectAndUser(projectId, pageable);
         return projectAndUserDtoList;
     }
 
+
+    @Override
     public Page<ProjectDto> listProjectByUser(Pageable pageable){
 
         Page<ProjectDto> listProjectByUser = projectUserRepository.listProjectByUser(getUserLoginId(), pageable);
@@ -59,19 +63,21 @@ public class ProjectUserServiceImpl {
     }
 
 
+    @Override
     public List<ProjectUser> addToProject(List<ProjectUser> projectUserList){
 
         return projectUserRepository.saveAll(projectUserList);
     }
 
 
-    public ProjectUser removeFromProject(Long projectId, Long userId){
+    @Override
+    public void removeFromProject(Long projectId, Long userId){
 
         ProjectUser projectUserFind = projectUserRepository.findProjectByUser(projectId, userId);
         projectUserRepository.deleteById(projectUserFind.getProjectUserId());
         removeMessagePresit(projectId, userId);
-        return null;
     }
+
 
     public static Long getUserLoginId() {
 

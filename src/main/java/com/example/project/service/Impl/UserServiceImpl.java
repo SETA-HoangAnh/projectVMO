@@ -1,4 +1,4 @@
-package com.example.project.service;
+package com.example.project.service.Impl;
 
 import com.example.project.dto.UserAndRoleDto;
 import com.example.project.dto.UserInforClassDto;
@@ -12,6 +12,7 @@ import com.example.project.repository.UserGradeRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.repository.UserRoleRepository;
 import com.example.project.security.service.UserDetailsImpl;
+import com.example.project.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
     private static UserRepository userRepository;
 
@@ -47,6 +48,7 @@ public class UserServiceImpl {
     }
 
 
+    @Override
     public Page<UserInforDto> getUser(String userName, String fullName, String codingLanguage, String email,
                                       Pageable pageable){
 
@@ -70,6 +72,7 @@ public class UserServiceImpl {
     }
 
 
+    @Override
     public Page<UserInforNoCenterDTO> getUserNoCenter(String userName, String fullName, String codingLanguage, String email,
                                                       Pageable pageable){
 
@@ -93,6 +96,7 @@ public class UserServiceImpl {
     }
 
 
+    @Override
     public ResponseEntity<?> createUser(SignupRequest signUpRequest, UserGrade userGrade) {
         if (userRepository.existsByUserName(signUpRequest.getUserName())) {
             return ResponseEntity
@@ -164,7 +168,8 @@ public class UserServiceImpl {
     }
 
 
-    public Users editUser(Long userId, Users users){
+    @Override
+    public void editUser(Long userId, Users users){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(()->new ResourceNotFoundException("User", "Id", userId));
@@ -175,21 +180,22 @@ public class UserServiceImpl {
         userFind.setEmail(users.getEmail());
         userFind.getCenter();
 
-        return userRepository.save(userFind);
+        userRepository.save(userFind);
     }
 
 
-    public Users deleteUser(Long userId){
+    @Override
+    public void deleteUser(Long userId){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
         userRepository.deleteById(userFind.getUserId());
 
-        return null;
     }
 
 
-    public Users tranferUser(Long userId, Users users){
+    @Override
+    public void tranferUser(Long userId, Users users){
 
         Users userFind = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
@@ -200,7 +206,7 @@ public class UserServiceImpl {
         userFind.getEmail();
         userFind.setCenter(users.getCenter());
 
-        return userRepository.save(userFind);
+        userRepository.save(userFind);
     }
 
 

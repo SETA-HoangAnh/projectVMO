@@ -1,6 +1,6 @@
 package com.example.project.entity;
 
-import com.example.project.service.ProjectUserServiceImpl;
+import com.example.project.service.Impl.ProjectUserServiceImpl;
 import lombok.Data;
 
 import javax.persistence.*;

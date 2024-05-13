@@ -1,9 +1,7 @@
 package com.example.project.controller;
 
-import com.example.project.dto.UserInforDto;
-import com.example.project.dto.UserInforNoCenterDTO;
 import com.example.project.entity.Center;
-import com.example.project.service.CenterServiceImpl;
+import com.example.project.service.CenterService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,57 +19,58 @@ import java.util.Map;
 @RequestMapping("${apiPrefix}/center")
 public class CenterController {
 
-    private final CenterServiceImpl centerServiceImpl;
+    private final CenterService centerService;
 
-    public CenterController(CenterServiceImpl centerServiceImpl) {
-        this.centerServiceImpl = centerServiceImpl;
+    public CenterController(CenterService centerService) {
+        this.centerService = centerService;
     }
 
-    @GetMapping("/getCenter")
+
+    /**
+     * API danh sách trung tâm
+     */
+    @GetMapping("/")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> getCenter(@RequestParam(required = false) String centerName,
-                                       @RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<Page<Center>> getCenter(@RequestParam(required = false) String centerName,
+                                       Pageable pageable){
 
-        List<Center> centers;
-        Pageable paging = PageRequest.of(page, size);
-        Page<Center> centersPage = null;
-
-        centersPage = centerServiceImpl.getCenter(centerName, paging);
-        centers = centersPage.getContent();
-        Map<String, Object> response = new HashMap<>();
-        response.put("centers", centers);
-        response.put("currentPage", centersPage.getNumber());
-        response.put("totalItems", centersPage.getTotalElements());
-        response.put("totalPages", centersPage.getTotalPages());
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Page<Center> centersPage = centerService.getAllCenter(centerName, pageable);
+        return new ResponseEntity<>(centersPage, HttpStatus.OK);
     }
 
 
-    @PostMapping("/addCenter")
+    /**
+     * API thêm trung tâm
+     */
+    @PostMapping("/")
     @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
-    public ResponseEntity<?> addCenter(@RequestBody Center center){
+    public ResponseEntity<String> addCenter(@RequestBody Center center) {
 
-        centerServiceImpl.addCenter(center);
+        centerService.save(center);
         return ResponseEntity.ok("Center added");
     }
 
 
-    @PutMapping("/editCenter/{centerId}")
+    /**
+     * API sửa trung tâm
+     */
+    @PutMapping("/{centerId}")
     @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
-    public ResponseEntity<?> editCenter(@PathVariable("centerId") Long centerId, @RequestBody Center center){
+    public ResponseEntity<String> updateCenter(@PathVariable("centerId") Long centerId, @RequestBody Center center) {
 
-        centerServiceImpl.editCenter(centerId, center);
+        centerService.update(centerId, center);
         return ResponseEntity.ok("Center edited");
     }
 
 
-    @DeleteMapping("/deleteCenter/{centerId}")
+    /**
+     * API xóa trung tâm
+     */
+    @DeleteMapping("/{centerId}")
     @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
-    public ResponseEntity<?> deleteCenter(@PathVariable("centerId") Long centerId){
+    public ResponseEntity<String> deleteCenter(@PathVariable("centerId") Long centerId) {
 
-        centerServiceImpl.deleteCenter(centerId);
+        centerService.delete(centerId);
         return ResponseEntity.ok("Center deleted");
     }
 }

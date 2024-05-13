@@ -5,8 +5,10 @@ import com.example.project.dto.UserInforNoCenterDTO;
 import com.example.project.entity.UserGrade;
 import com.example.project.entity.Users;
 import com.example.project.payload.SignupRequest;
-import com.example.project.service.UserServiceImpl;
+import com.example.project.service.Impl.UserServiceImpl;
 
+import com.example.project.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,96 +25,91 @@ import java.util.Map;
 @RestController
 @RequestMapping("${apiPrefix}/users")
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequiredArgsConstructor
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
-    public UserController(UserServiceImpl userServiceImpl) {
 
-        this.userServiceImpl = userServiceImpl;
-    }
-
+    /**
+     * API danh sách fresher
+     */
 
     /**
      * type = 1: filter by user with center
      * type = 2: filter by user with no center
      */
-    @GetMapping("/getUser")
+    @GetMapping("/")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> getUser(@RequestParam(required = false) String userName,
                                       @RequestParam(required = false) String fullName,
                                       @RequestParam(required = false) String codingLanguage,
                                       @RequestParam(required = false) String email,
                                       @RequestParam(required = false, defaultValue = "1") String type,
-                                      @RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "10") int size){
+                                      Pageable pageable){
 
-        List<UserInforDto> users;
-        List<UserInforNoCenterDTO> usersNoCenter;
-        Pageable paging = PageRequest.of(page, size);
-        Page<UserInforDto> usersPage = null;
+        Page<UserInforDto> usersNoCenter = null;
         Page<UserInforNoCenterDTO> usersPageNoCenter = null;
 
         if(type.equals("1")) {
 
-            usersPage = userServiceImpl.getUser(userName, fullName, codingLanguage, email, paging);
+            usersNoCenter = userService.getUser(userName, fullName, codingLanguage, email, pageable);
+            return new ResponseEntity<>(usersNoCenter, HttpStatus.OK);
         }
         if(type.equals("2")){
 
-            usersPageNoCenter = userServiceImpl.getUserNoCenter(userName, fullName, codingLanguage, email, paging);
-            usersNoCenter = usersPageNoCenter.getContent();
-            Map<String, Object> response = new HashMap<>();
-            response.put("users", usersNoCenter);
-            response.put("currentPage", usersPageNoCenter.getNumber());
-            response.put("totalItems", usersPageNoCenter.getTotalElements());
-            response.put("totalPages", usersPageNoCenter.getTotalPages());
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            usersPageNoCenter = userService.getUserNoCenter(userName, fullName, codingLanguage, email, pageable);
+            return new ResponseEntity<>(usersPageNoCenter, HttpStatus.OK);
         }
 
-        usersPage = userServiceImpl.getUser(userName, fullName, codingLanguage, email, paging);
+        usersNoCenter = userService.getUser(userName, fullName, codingLanguage, email, pageable);
 
-        users = usersPage.getContent();
-        Map<String, Object> response = new HashMap<>();
-        response.put("users", users);
-        response.put("currentPage", usersPage.getNumber());
-        response.put("totalItems", usersPage.getTotalElements());
-        response.put("totalPages", usersPage.getTotalPages());
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(usersNoCenter, HttpStatus.OK);
     }
 
 
-    @PostMapping("/createUser")
+    /**
+     * API thêm user
+     */
+    @PostMapping("/")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signUpRequest, UserGrade userGrade) {
 
-        return ResponseEntity.ok(userServiceImpl.createUser(signUpRequest, userGrade));
+        return ResponseEntity.ok(userService.createUser(signUpRequest, userGrade));
     }
 
 
-    @PutMapping("/editUser/{userId}")
+    /**
+     * API sửa user
+     */
+    @PutMapping("/{userId}")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> editUser(@PathVariable("userId") Long userId, @RequestBody Users users){
+    public ResponseEntity<String> editUser(@PathVariable("userId") Long userId, @RequestBody Users users){
 
-        userServiceImpl.editUser(userId, users);
+        userService.editUser(userId, users);
         return ResponseEntity.ok("User edited");
     }
 
 
-    @DeleteMapping("/deleteUser/{userId}")
+    /**
+     * API xóa user
+     */
+    @DeleteMapping("/{userId}")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId){
+    public ResponseEntity<String> deleteUser(@PathVariable("userId") Long userId){
 
-        userServiceImpl.deleteUser(userId);
+        userService.deleteUser(userId);
         return ResponseEntity.ok("User deleted");
     }
 
-
+    /**
+     * API chuyển fresher vào trung tâm
+     */
     @PutMapping("/tranferUser/{userId}")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<?> tranferUser(@PathVariable("userId") Long userId, @RequestBody Users users){
+    public ResponseEntity<String> tranferUser(@PathVariable("userId") Long userId, @RequestBody Users users){
 
-        userServiceImpl.tranferUser(userId, users);
+        userService.tranferUser(userId, users);
         return ResponseEntity.ok("User tranfered");
     }
 }

@@ -1,35 +1,43 @@
 package com.example.project.controller;
 
+import com.example.project.dto.UserGradeDto;
 import com.example.project.entity.UserGrade;
-import com.example.project.service.UserGradeServiceImpl;
+import com.example.project.service.Impl.UserGradeServiceImpl;
 
+import com.example.project.service.UserGradeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${apiPrefix}/userGrade")
+@RequiredArgsConstructor
 public class UserGradeController {
 
-    private final UserGradeServiceImpl userGradeServiceImpl;
+    private final UserGradeService userGradeService;
 
-    public UserGradeController(UserGradeServiceImpl userGradeServiceImpl) {
-        this.userGradeServiceImpl = userGradeServiceImpl;
+    /**
+     * API danh sách điểm theo user
+     */
+    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserGradeDto> getGrade(@PathVariable("userId") Long userId){
+
+        UserGradeDto userGrade = userGradeService.getGrade(userId);
+        return new ResponseEntity<>(userGrade, HttpStatus.OK);
     }
 
+    /**
+     * API sửa, thêm điểm user
+     */
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    @GetMapping("/getGrade/{userId}")
-    public ResponseEntity<?> getGrade(@PathVariable("userId") Long userId){
-
-        return ResponseEntity.ok(userGradeServiceImpl.getGrade(userId));
-    }
-
-    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    @PutMapping("/editGrade/{userId}")
-    public ResponseEntity<?> editGrade(@PathVariable("userId") Long userId,
+    @PutMapping("/{userId}")
+    public ResponseEntity<String> editGrade(@PathVariable("userId") Long userId,
                                        @RequestBody UserGrade userGrade){
 
-        userGradeServiceImpl.editGrade(userId, userGrade);
+        userGradeService.editGrade(userId, userGrade);
         return ResponseEntity.ok("Grade edited");
     }
 
