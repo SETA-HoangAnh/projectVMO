@@ -66,6 +66,7 @@ public class UserController {
             response.put("currentPage", usersPageNoCenter.getNumber());
             response.put("totalItems", usersPageNoCenter.getTotalElements());
             response.put("totalPages", usersPageNoCenter.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
         usersPage = userServiceImpl.getUser(userName, fullName, codingLanguage, email, paging);

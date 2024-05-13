@@ -30,7 +30,6 @@ public class ProjectServiceImpl {
         }
 
         Page<ProjectDto> projectDtoList = projectRepository.getProject(projectName, projectCode, pageable);
-
         return projectDtoList;
     }
 
