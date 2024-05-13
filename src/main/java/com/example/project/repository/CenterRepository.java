@@ -44,4 +44,5 @@ public interface CenterRepository extends JpaRepository<Center, Long> {
 
     Boolean existsByCenterId(Long centerId);
 
+    Page<Center> findByCenterName(String centerName, Pageable pageable);
 }
