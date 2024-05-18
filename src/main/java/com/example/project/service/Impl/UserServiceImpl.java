@@ -209,6 +209,19 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userFind);
     }
 
+//    @Override
+//    public void removeFromCenter(Long userId, Long centerId) {
+//
+//        userRepository.updateId(userId,centerId);
+//    }
+
+    @Override
+    public void removeFromCenter(Long userId, Long centerId) {
+
+        userRepository.updateId(userId,centerId);
+
+    }
+
 
     public static List<UserInforClassDto> listUIClassDto(Long averageScore){
 

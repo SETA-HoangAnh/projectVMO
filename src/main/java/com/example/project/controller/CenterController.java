@@ -70,7 +70,6 @@ public class CenterController {
     @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
     public ResponseEntity<String> deleteCenter(@PathVariable("centerId") Long centerId) {
 
-        centerService.delete(centerId);
-        return ResponseEntity.ok("Center deleted");
+        return centerService.delete(centerId);
     }
 }

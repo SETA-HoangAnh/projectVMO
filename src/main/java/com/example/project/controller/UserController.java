@@ -75,7 +75,7 @@ public class UserController {
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signUpRequest, UserGrade userGrade) {
 
-        return ResponseEntity.ok(userService.createUser(signUpRequest, userGrade));
+        return userService.createUser(signUpRequest, userGrade);
     }
 
 
@@ -111,5 +111,17 @@ public class UserController {
 
         userService.tranferUser(userId, users);
         return ResponseEntity.ok("User tranfered");
+    }
+
+    /**
+     * API xóa fresher khỏi trung tâm
+     */
+    @PutMapping("/removeFromCenter")
+    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
+    public ResponseEntity<String> removeFromCenter(@RequestParam Long userId,
+                                                   @RequestParam Long centerId){
+
+        userService.removeFromCenter(userId,centerId);
+        return ResponseEntity.ok("Deleted from center");
     }
 }

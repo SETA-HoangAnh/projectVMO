@@ -5,9 +5,11 @@ import com.example.project.entity.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,5 +86,16 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     Boolean existsByEmail(String email);
 
     Boolean existsByUserId(Long userId);
+
+    Boolean existsByCenterCenterId(Long centerId);
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+    value = """
+            UPDATE users u
+            SET u.center_id = null 
+            WHERE u.user_id = ?1 and u.center_id = ?2 """)
+    void updateId(Long userId, Long centerId);
 
 }

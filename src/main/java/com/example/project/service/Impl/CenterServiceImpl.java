@@ -1,12 +1,15 @@
 package com.example.project.service.Impl;
 
 import com.example.project.entity.Center;
+import com.example.project.entity.Users;
 import com.example.project.exception.ResourceNotFoundException;
 import com.example.project.repository.CenterRepository;
+import com.example.project.repository.UserRepository;
 import com.example.project.service.CenterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class CenterServiceImpl implements CenterService {
 
     private final CenterRepository centerRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     public Page<Center> getAllCenter(String centerName, Pageable pageable) {
@@ -43,8 +48,19 @@ public class CenterServiceImpl implements CenterService {
 
 
     @Override
-    public void delete(Long centerId) {
+    public ResponseEntity<String> delete(Long centerId) {
 
-        centerRepository.deleteById(centerId);
+        Boolean idCheck = userRepository.existsByCenterCenterId(centerId);
+        if(idCheck) {
+
+            return ResponseEntity.badRequest().body("Still contains fresher");
+        }
+        else {
+
+            Center centerFind = centerRepository.findById(centerId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Center", "Id", centerId));
+            centerRepository.deleteById(centerFind.getCenterId());
+            return ResponseEntity.ok("Center deleted");
+        }
     }
 }
