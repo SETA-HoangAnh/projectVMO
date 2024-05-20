@@ -13,7 +13,7 @@ public interface ProjectService {
 
     void editProject(Long projectId, Project project);
 
-    void deleteProject(Long projectId);
+//    void deleteProject(Long projectId);
 
 
 }

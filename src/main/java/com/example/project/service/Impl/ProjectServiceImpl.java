@@ -55,12 +55,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-    @Override
-    public void deleteProject(Long projectId){
-
-        Project projectFind = projectRepository.findById(projectId)
-                .orElseThrow(()-> new ResourceNotFoundException("Project", "id", projectId));
-
-        projectRepository.deleteById(projectFind.getProjectId());
-    }
+//    @Override
+//    public void deleteProject(Long projectId){
+//
+//        Project projectFind = projectRepository.findById(projectId)
+//                .orElseThrow(()-> new ResourceNotFoundException("Project", "id", projectId));
+//
+//        projectRepository.deleteById(projectFind.getProjectId());
+//    }
 }

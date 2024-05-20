@@ -236,7 +236,6 @@ public class UserServiceImpl implements UserService {
     public List<String> getRoles() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
         List<String> result = new ArrayList<>();
         List<UserRole> findRole = userRoleRepository.getRoles(userDetails.getId());
         for (UserRole u : findRole) {

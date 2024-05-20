@@ -4,6 +4,7 @@ import com.example.project.payload.LoginRequest;
 import com.example.project.service.Impl.AuthServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ public class AuthController {
     /**
      * API login
      */
-    @PostMapping("/signin")
+    @PostMapping(value = "/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         return authServiceImpl.authenticateUser(loginRequest);
     }

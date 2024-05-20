@@ -5,6 +5,7 @@ import com.example.project.dto.UserInforNoCenterDTO;
 import com.example.project.entity.UserGrade;
 import com.example.project.entity.Users;
 import com.example.project.payload.SignupRequest;
+import com.example.project.security.jwt.AuthEntryPointJwt;
 import com.example.project.service.Impl.UserServiceImpl;
 
 import com.example.project.service.UserService;
@@ -13,8 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,7 +29,7 @@ import java.util.Map;
 @RequestMapping("${apiPrefix}/users")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequiredArgsConstructor
-public class UserController {
+public class UserController{
 
     private final UserService userService;
 

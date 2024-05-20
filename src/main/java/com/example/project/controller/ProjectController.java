@@ -64,15 +64,15 @@ public class ProjectController {
     }
 
 
-    /**
-     * API xóa dự án
-     */
-    @DeleteMapping("/{projectId}")
-    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<String> deleteProject(@PathVariable("projectId") Long projectId){
-
-        projectService.deleteProject(projectId);
-        return ResponseEntity.ok("Project deleted");
-    }
+//    /**
+//     * API xóa dự án
+//     */
+//    @DeleteMapping("/{projectId}")
+//    @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
+//    public ResponseEntity<String> deleteProject(@PathVariable("projectId") Long projectId){
+//
+//        projectService.deleteProject(projectId);
+//        return ResponseEntity.ok("Project deleted");
+//    }
 
 }
