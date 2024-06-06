@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -17,6 +18,7 @@ public class Center {
     @Column(name = "center_id")
     private Long centerId;
 
+    @NotEmpty(message = "missing center name")
     @Column(name = "center_name")
     private String centerName;
 

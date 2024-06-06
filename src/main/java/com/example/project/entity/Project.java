@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,9 +20,11 @@ public class Project {
     @Column(name = "project_id")
     private Long projectId;
 
+    @NotEmpty(message = "missing project name")
     @Column(name = "project_name")
     private String projectName;
 
+    @NotEmpty(message = "missing project code")
     @Column(name = "project_code")
     private String projectCode;
 

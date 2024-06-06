@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class CenterController {
      */
     @PostMapping("/")
     @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
-    public ResponseEntity<String> addCenter(@RequestBody Center center) {
+    public ResponseEntity<String> addCenter(@Valid @RequestBody Center center) {
 
         centerService.save(center);
         return ResponseEntity.ok("Center added");
@@ -56,7 +57,7 @@ public class CenterController {
      */
     @PutMapping("/{centerId}")
     @PreAuthorize("@userServiceImpl.getRoles().contains('ROLE_MANAGER') ")
-    public ResponseEntity<String> updateCenter(@PathVariable("centerId") Long centerId, @RequestBody Center center) {
+    public ResponseEntity<String> updateCenter(@PathVariable("centerId") Long centerId, @Valid @RequestBody Center center) {
 
         centerService.update(centerId, center);
         return ResponseEntity.ok("Center edited");

@@ -87,7 +87,7 @@ public class UserController{
      */
     @PutMapping("/{userId}")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<String> editUser(@PathVariable("userId") Long userId, @RequestBody Users users){
+    public ResponseEntity<String> editUser(@PathVariable("userId") Long userId, @Valid @RequestBody Users users){
 
         userService.editUser(userId, users);
         return ResponseEntity.ok("User edited");

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -18,13 +20,16 @@ public class Users {
     @Column(name = "user_id")
     private Long userId;
 
+    @NotEmpty(message = "missing user name")
     @Column(name = "user_name")
     private String userName;
 
+    @NotEmpty(message = "missing full name")
     @Column(name = "full_name")
     private String fullName;
 
     @Size(max = 120)
+    @NotEmpty(message = "missing password")
     @Column(name = "password")
     private String password;
 
@@ -34,10 +39,12 @@ public class Users {
      * 3: Python
      * 4: JavaScrip
      */
+    @NotEmpty(message = "missing coding language")
     @Column(name = "coding_language")
     private String codingLanguage;
 
-
+    @NotEmpty(message = "missing email")
+    @Email(message = "invalid email format")
     @Column(name = "email", unique = true)
     private String email;
 

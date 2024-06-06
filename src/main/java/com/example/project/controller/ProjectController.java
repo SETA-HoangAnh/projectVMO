@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class ProjectController {
      */
     @PostMapping("/")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
-    public ResponseEntity<String> addProject(@RequestBody Project project){
+    public ResponseEntity<String> addProject(@Valid @RequestBody Project project){
 
         projectService.addProject(project);
         return ResponseEntity.ok("Project saved");
@@ -57,7 +58,7 @@ public class ProjectController {
     @PutMapping("/{projectId}")
     @PreAuthorize( "@userServiceImpl.getRoles().contains('ROLE_MANAGER')")
     public ResponseEntity<String> editProject(@PathVariable("projectId") Long projectId,
-                                         @RequestBody Project project){
+                                              @Valid @RequestBody Project project){
 
         projectService.editProject(projectId, project);
         return ResponseEntity.ok("Project edited");
